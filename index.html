@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/app.css">
+    <title>InlineJS Demos</title>
+    <style>
+        [x-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="sticky top-0 left-0 mb-8 w-full bg-white border-b z-10" x-data>
+        <nav class="container mx-auto h-20 flex flex-row justify-between items-center">
+            <div>
+                <a href="/" class="text-2xl text-blue-700 font-bold" x-router:link>InlineJS</a>
+            </div>
+            <div class="flex flex-row justify-start items-center">
+                <div class="relative" x-on:keydown.esc.window="$scope.show = false" x-on:click.outside="$scope.show = false" x-data>
+                    <template x-router:entered="$scope.show = false"></template>
+                    <a href="/apps" class="flex flex-row justify-start items-center text-amber-700 font-semibold" x-on:click.prevent="$scope.show = !$scope.show">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-app" viewBox="0 0 16 16">
+                                <path d="M11 2a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3h6zM5 1a4 4 0 0 0-4 4v6a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4H5z"/>
+                            </svg>
+                        </span>
+                        <span class="ml-2">Apps</span>
+                        <span class="ml-2 text-gray-600" x-animate="!$scope.show" x-transition:actor="$animation.rotate({ factor: 180 })" x-transition:duration="$animation.faster">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <figure class="absolute top-8 right-0 py-0 flex flex-col justify-start items-start bg-white text-amber-600 border rounded-lg shadow-lg overflow-hidden"
+                        style="min-width: 16rem;" x-show="$scope.show" x-transition:actor="'zoom'" x-transition:ease="'back'" x-transition:duration="$animation.faster" x-cloak>
+                        <template x-each="$get('/json/apps', true) as index => info">
+                            <a href="/apps/{{ info.path }}" class="relative min-w-full px-8 py-2 font-semibold whitespace-nowrap" x-data
+                                x-router:link="$scope.active = $active" x-class="{ 'border-t': (index != 0) }">
+                                <span>{{ info.name }}</span>
+                                <span class="absolute top-0 right-4 h-full flex flex-col justify-center items-start text-gray-700" x-show="$scope.active">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-flag" viewBox="0 0 16 16">
+                                        <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21.294 21.294 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21.317 21.317 0 0 0 14 7.655V1.222z"/>
+                                    </svg>
+                                </span>
+                            </a>
+                        </template>
+                    </figure>
+                </div>
+                <div class="relative ml-8" x-on:keydown.esc.window="$scope.show = false" x-on:click.outside="$scope.show = false" x-data>
+                    <template x-router:entered="$scope.show = false"></template>
+                    <a href="/games" class="flex flex-row justify-start items-center text-amber-700 font-semibold" x-on:click.prevent="$scope.show = !$scope.show">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-controller" viewBox="0 0 16 16">
+                                <path d="M11.5 6.027a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm2.5-.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm-1.5 1.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm-6.5-3h1v1h1v1h-1v1h-1v-1h-1v-1h1v-1z"/>
+                                <path d="M3.051 3.26a.5.5 0 0 1 .354-.613l1.932-.518a.5.5 0 0 1 .62.39c.655-.079 1.35-.117 2.043-.117.72 0 1.443.041 2.12.126a.5.5 0 0 1 .622-.399l1.932.518a.5.5 0 0 1 .306.729c.14.09.266.19.373.297.408.408.78 1.05 1.095 1.772.32.733.599 1.591.805 2.466.206.875.34 1.78.364 2.606.024.816-.059 1.602-.328 2.21a1.42 1.42 0 0 1-1.445.83c-.636-.067-1.115-.394-1.513-.773-.245-.232-.496-.526-.739-.808-.126-.148-.25-.292-.368-.423-.728-.804-1.597-1.527-3.224-1.527-1.627 0-2.496.723-3.224 1.527-.119.131-.242.275-.368.423-.243.282-.494.575-.739.808-.398.38-.877.706-1.513.773a1.42 1.42 0 0 1-1.445-.83c-.27-.608-.352-1.395-.329-2.21.024-.826.16-1.73.365-2.606.206-.875.486-1.733.805-2.466.315-.722.687-1.364 1.094-1.772a2.34 2.34 0 0 1 .433-.335.504.504 0 0 1-.028-.079zm2.036.412c-.877.185-1.469.443-1.733.708-.276.276-.587.783-.885 1.465a13.748 13.748 0 0 0-.748 2.295 12.351 12.351 0 0 0-.339 2.406c-.022.755.062 1.368.243 1.776a.42.42 0 0 0 .426.24c.327-.034.61-.199.929-.502.212-.202.4-.423.615-.674.133-.156.276-.323.44-.504C4.861 9.969 5.978 9.027 8 9.027s3.139.942 3.965 1.855c.164.181.307.348.44.504.214.251.403.472.615.674.318.303.601.468.929.503a.42.42 0 0 0 .426-.241c.18-.408.265-1.02.243-1.776a12.354 12.354 0 0 0-.339-2.406 13.753 13.753 0 0 0-.748-2.295c-.298-.682-.61-1.19-.885-1.465-.264-.265-.856-.523-1.733-.708-.85-.179-1.877-.27-2.913-.27-1.036 0-2.063.091-2.913.27z"/>
+                            </svg>
+                        </span>
+                        <span class="ml-2">Games</span>
+                        <span class="ml-2 text-gray-600" x-animate="!$scope.show" x-transition:actor="$animation.rotate({ factor: 180 })" x-transition:duration="$animation.faster">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </span>
+                    </a>
+                    <figure class="absolute top-8 right-0 py-0 flex flex-col justify-start items-start bg-white text-amber-600 border rounded-lg shadow-lg overflow-hidden"
+                        style="min-width: 16rem;" x-show="$scope.show" x-transition:actor="'zoom'" x-transition:ease="'back'" x-transition:duration="$animation.faster" x-cloak>
+                        <template x-each="$get('/json/games', true) as index => info">
+                            <a href="/games/{{ info.path }}" class="relative min-w-full px-8 py-2 font-semibold whitespace-nowrap" x-data
+                                x-router:link="$scope.active = $active" x-class="{ 'border-t': (index != 0) }">
+                                <span>{{ info.name }}</span>
+                                <span class="absolute top-0 right-4 h-full flex flex-col justify-center items-start text-gray-700" x-show="$scope.active">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-flag" viewBox="0 0 16 16">
+                                        <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21.294 21.294 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21.317 21.317 0 0 0 14 7.655V1.222z"/>
+                                    </svg>
+                                </span>
+                            </a>
+                        </template>
+                    </figure>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <template x-router:page.evaluate="{ path: '/', title: 'Home | InlineJS Demos' }" x-data></template>
+    <template x-router:page.evaluate="{ path: /^\/?games(\/.+)?$/, title: 'Games | InlineJS Demos' }" x-data></template>
+    <template x-router:page.evaluate="{ path: /^\/?apps(\/.+)?$/, title: 'Apps | InlineJS Demos' }" x-data></template>
+
+    <template x-router:mount.main x-transition.normal x-data></template>
+    <template x-static="$router.setPrefix('pages'); $router.mount(true)" x-data></template>
+
+    <script>
+        function getData(){
+            return {
+                list: {
+                    name: {
+                        first: 'Anon Legion',
+                        second:'Anon Legion2',
+                    },
+                    email: {
+                        first:'anon.legion@crypt.co',
+                        second:'a@b.c',
+                    },
+                    age: {
+                        first:27,
+                        second:45,
+                    },
+                    sex: {
+                        first:'MALE',
+                        second:'FEMALE',
+                    }
+                }
+            };
+        }
+    
+        function customDirectiveHandler({ component, componentId, contextElement, ...rest }){
+            contextElement.textContent = 'Custom Directive Handled';
+            console.log(component, componentId, contextElement, rest);
+        }
+    </script>
+
+    <script src="/public/script/inlinejs-animation.min.js"></script>
+    <script src="/public/script/inlinejs-moment.min.js"></script>
+    <script src="/public/script/inlinejs-collections.min.js"></script>
+    <script src="/public/script/inlinejs-screen.min.js"></script>
+    <script src="/public/script/inlinejs-alert.min.js"></script>
+    <script src="/public/script/inlinejs-router.min.js"></script>
+    <script src="/public/script/inlinejs-extended.min.js"></script>
+    <script src="/public/script/inlinejs-core.min.js"></script>
+    <script src="/public/script/inlinejs.min.js"></script>
+</body>
+</html>

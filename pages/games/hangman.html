@@ -1,0 +1,198 @@
+<div class="relative container mx-auto" x-data="{ record: { players: [] }, word: '', picks: [], checkpoint: 0 }">
+    <template x-static="$get('/json/record').then(data => record = $eval(data))"></template>
+    <template x-static="$get('/json/words', true).then(data => wordList = data)"></template>
+
+    <template x-static="generateWord = () => { let words = wordList[category]; return words[Math.floor(Math.random() * words.length)] }"></template>
+    <template x-static="insertChar = (char) => { picks.push(char); wrongPicks = picks.filter(c => !word.includes(c)).length; fate = (winFate() || lossFate()) }"></template>
+    <template x-static="winFate = () => ((word.findIndex(c => !picks.includes(c)) == -1) ? 'win' : null)"></template>
+    <template x-static="lossFate = () => ((wrongPicks >= 6) ? 'loss' : null)"></template>
+    <template x-effect="if (fate){ record.endPlayerTurn(fate === 'win') }"></template>
+    <template x-on:keydown.alpha.window="if (playing && !fate && !picks.includes($event.key)){ insertChar($event.key) }"></template>
+    <template x-effect="if ($log.and(playing, (seconds == 0))){ ++checkpoint; fate = 'loss'; wrongPicks = 6 }"></template>
+    <template x-effect="if (fate){ window.clearInterval(intId); ++checkpoint }"></template>
+
+    <section class="absolute top-0 right-0 flex flex-col justify-start items-end">
+        <div class="relative" x-data>
+            <div class="absolute top-10 right-0 flex flex-col justify-start items-end">
+                <button class="absolute -top-10 right-0 px-2 py-2 border rounded-full overflow-hidden"
+                    x-on:click="$scope.action = (playing ? '' : 'add'); $scope.playerName = ''">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                </button>
+                <div class="px-4 py-2 flex flex-col justify-start items-start bg-white border rounded-lg overflow-hidden">
+                    <template x-each="record.players as index => player" :key="player.name">
+                        <figure class="relative min-w-full pl-4 py-2 flex flex-row justify-start items-center text-sm whitespace-nowrap">
+                            <div class="absolute top-0 left-0 w-4 h-full flex flex-row justify-center items-center" x-show="record.currentPlayer == index">
+                                <span class="text-amber-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                        <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <p class="mr-2 text-blue-700 font-semibold">{{ player.name }}</p>
+                            <div class="flex-grow flex flex-row justify-end items-center">
+                                <p class="pl-2 text-green-700 border-l" x-text="(player.wins == 1) ? '1 win' : `${player.wins} wins`"></p>
+                                <p class="ml-2 pr-2 text-red-600" x-text="(player.losses == 1) ? '1 loss' : `${player.losses} losses`"></p>
+                                <div class="pl-2 flex flex-row justify-start items-center border-l">
+                                    <button class="px-1 py-1 border rounded-full overflow-hidden"
+                                        x-on:click="$scope.playerIndex = index; $scope.playerName = player.name; $scope.action = 'edit'">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                        </svg>
+                                    </button>
+                                    <button class="ml-2 px-1 py-1 text-red-700 border rounded-full overflow-hidden"
+                                        x-on:click="let i = index; !playing && $alert.confirm('Are you sure you want to delete player?').then(res => res.isConfirmed && record.removePlayer(i))">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </figure>
+                    </template>
+                </div>
+                <div class="mt-4 flex flex-row justify-start items-center text-xl font-bold" x-show="playing"
+                    x-class="{ 'text-gray-700': $rel.gt(seconds, 15), 'text-red-600': $rel.le(seconds, 15) }">
+                    <span class="mr-2">{{ seconds }}</span>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-clock" viewBox="0 0 16 16">
+                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <div class="fixed top-0 left-0 w-screen h-screen flex flex-row justify-center items-center z-20 backdrop-blur-sm" style="background: rgba(0, 0, 0, 0.63);"
+                x-on:click.self="$scope.action = ''" x-cloak x-show="$scope.action === 'add'">
+                <template x-static="add = () => { $scope.action = ''; record.addPlayer($scope.playerName, 0) }"></template>
+                <figure class="px-8 py-8 flex flex-col justify-start items-start bg-white border rounded-lg overflow-hidden">
+                    <input type="text" class="w-64 px-4 py-2 text-sm text-gray-700 font-semibold border rounded-md overflow-hidden" x-model="$scope.playerName"
+                        x-effect="($scope.action === 'add') && $nextTick(() => this.focus())" x-on:keydown.enter="add()">
+                    <div class="mt-4 flex flex-row justify-start items-center">
+                        <button class="px-4 py-2 text-sm text-amber-700 font-semibold border rounded-md overflow-hidden"
+                            x-on:click="add()">Add Player</button>
+                        <button class="ml-4 px-4 py-2 text-sm text-red-700 font-semibold border border-red-700 rounded-md overflow-hidden"
+                            x-on:click="$scope.action = ''">Cancel</button>
+                    </div>
+                </figure>
+            </div>
+            <div class="fixed top-0 left-0 w-screen h-screen flex flex-row justify-center items-center z-20 backdrop-blur-sm" style="background: rgba(0, 0, 0, 0.63);"
+                x-on:click.self="$scope.action = ''" x-cloak x-show="$scope.action === 'edit'">
+                <template x-static="update = () => { $scope.action = ''; record.updatePlayer($scope.playerIndex, $scope.playerName, 0) }"></template>
+                <figure class="px-8 py-8 flex flex-col justify-start items-start bg-white border rounded-lg overflow-hidden">
+                    <input type="text" class="w-64 px-4 py-2 text-sm text-gray-700 font-semibold border rounded-md overflow-hidden" x-model="$scope.playerName"
+                        x-effect="($scope.action === 'edit') && $nextTick(() => this.focus())" x-on:keydown.enter="update()">
+                    <div class="mt-4 flex flex-row justify-start items-center">
+                        <button class="px-4 py-2 text-sm text-amber-700 font-semibold border rounded-md overflow-hidden"
+                            x-on:click="update()">Save</button>
+                        <button class="ml-4 px-4 py-2 text-sm text-red-700 font-semibold border border-red-700 rounded-md overflow-hidden"
+                            x-on:click="$scope.action = ''">Cancel</button>
+                    </div>
+                </figure>
+            </div>
+        </div>
+        <!-- <div class="flex flex-row justify-start items-center font-semibold">
+            <p class="text-green-700" x-text="(wins == 1) ? '1 win' : `${wins} wins`"></p>
+            <p class="ml-4 text-red-600" x-text="(losses == 1) ? '1 loss' : `${losses} losses`"></p>
+        </div> -->
+    </section>
+
+    <section class="flex flex-col justify-start items-center" x-show="!playing">
+        <div class="flex flex-row justify-start items-center" x-effect="categories = Object.keys(wordList || {})">
+            <select class="px-4 py-2 border rounded-md capitalize" x-model="category">
+                <option value="">{{ wordList ? 'Select a category to begin' : 'Fetching word list...' }}</option>
+                <template x-each="categories as cat">
+                    <option x-bind:value="cat" x-text="cat"></option>
+                </template>
+            </select>
+            <button class="ml-4 px-4 py-2 border rounded-md"
+                x-on:click="category = categories[Math.floor(Math.random() * categories.length)]; playing = true; wrongPicks = 0; word = generateWord().split(''); picks = word.filter(c => !/[a-z]/.test(c)); seconds = 90; let c = ++checkpoint; intId = window.setInterval(() => { if (c == checkpoint) --seconds }, 1000)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
+                    <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
+                </svg>
+            </button>
+        </div>
+        <button class="mt-8 px-8 py-2 border rounded-md" x-show="category" x-cloak
+            x-on:click="playing = true; wrongPicks = 0; word = generateWord().split(''); picks = word.filter(c => !/[a-z]/.test(c)); seconds = 90; let c = ++checkpoint; intId = window.setInterval(() => { if (c == checkpoint) --seconds }, 1000)">Play</button>
+    </section>
+    <section class="flex flex-col justify-start items-center" x-show="playing" x-cloak>
+        <h2 class="text-xl text-gray-700 font-bold">Now playing: <span class="uppercase" x-text="category"></span></h2>
+        <div class="mt-16 flex flex-row justify-start items-start">
+            <div class="flex flex-col justify-start items-center">
+                <div class="flex flex-row justify-start items-center gap-x-4 text-5xl text-gray-600 font-semibold uppercase">
+                    <template class="bg-green-700 text-red-700" x-each="word as letter">
+                        <p class="w-12" x-class:text-red-700="$log.and(fate, !picks.includes(letter))" x-text="(fate || picks.includes(letter)) ? letter : '-'"></p>
+                    </template>
+                </div>
+                <div class="relative mt-16 w-96 flex flex-row justify-start items-center flex-wrap gap-x-4 gap-y-4">
+                    <template class="bg-red-600" x-each="26 as code">
+                        <button class="flex-shrink-0 w-16 h-12 flex flex-row justify-center items-center text-xl bg-teal-700 text-white font-semibold border rounded-md uppercase disabled:cursor-not-allowed"
+                            x-static="$locals.char = String.fromCharCode(code + 97)" x-text="$locals.char" x-bind:disabled="picks.includes($locals.char)"
+                            x-class:bg-teal-700="!picks.includes($locals.char)"
+                            x-class:bg-red-600="$log.and(picks.includes($locals.char), !word.includes($locals.char))"
+                            x-class:bg-green-700="$log.and(picks.includes($locals.char), word.includes($locals.char))"
+                            x-on:click="insertChar($locals.char)"></button>
+                    </template>
+                    <div class="absolute top-0 left-0 w-full h-full bg-transparent" x-show="fate"></div>
+                </div>
+            </div>
+            <div class="relative ml-8 text-gray-700">
+                <div class="relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="500" fill="currentColor" viewBox="0 0 200 500">
+                        <path d="m 0 405 v -405 h 200 v 64" fill="transparent" stroke-width="5" stroke="currentColor"></path>
+                    </svg>
+                    <div class="absolute bottom-8 left-32" x-show="fate" x-cloak>
+                        <div class="w-full flex flex-col justify-start items-center" x-show="fate === 'win'">
+                            <h4 class="text-xl text-gray-700 font-bold">Congratulations!</h4>
+                            <p class="mt-6 text-lg text-gray-600 font-semibold">You won!</p>
+                            <button class="flex-shrink-0 mt-8 px-8 py-2 border rounded-md whitespace-nowrap" x-on:click="playing = false; fate = null">Play again</button>
+                        </div>
+                        <div class="w-full flex flex-col justify-start items-center" x-show="fate === 'loss'">
+                            <h4 class="text-xl text-gray-700 font-bold">Uhh Oh!</h4>
+                            <p class="mt-6 text-lg text-gray-600 font-semibold">You lost!</p>
+                            <button class="flex-shrink-0 mt-8 px-8 py-2 border rounded-md whitespace-nowrap" x-on:click="playing = false; fate = null">Play again</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute top-16 -right-8 flex flex-col justify-start items-center">
+                    <div x-show="$rel.gt(wrongPicks, 0)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        </svg>
+                    </div>
+                    <div class="absolute top-14 -left-12" x-show="$rel.gt(wrongPicks, 2)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="50" fill="currentColor" viewBox="0 0 60 50">
+                            <path d="m 60 0 l -60 50" fill="transparent" stroke-width="5" stroke="currentColor"></path>
+                        </svg>
+                    </div>
+                    <div class="absolute top-14 -right-12" x-show="$rel.gt(wrongPicks, 3)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="50" fill="currentColor" viewBox="0 0 60 50">
+                            <path d="m 0 0 l 60 50" fill="transparent" stroke-width="5" stroke="currentColor"></path>
+                        </svg>
+                    </div>
+                    <div class="relative">
+                        <div x-show="$rel.gt(wrongPicks, 1)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="5" height="100" fill="currentColor" viewBox="0 0 5 100">
+                                <path d="m 0 0 v 100" fill="transparent" stroke-width="10" stroke="currentColor"></path>
+                            </svg>
+                        </div>
+                        <div class="absolute top-24 -left-14" x-show="$rel.gt(wrongPicks, 4)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="50" fill="currentColor" viewBox="0 0 60 50">
+                                <path d="m 60 0 l -60 50" fill="transparent" stroke-width="5" stroke="currentColor"></path>
+                            </svg>
+                        </div>
+                        <div class="absolute top-24 -right-14" x-show="$rel.gt(wrongPicks, 5)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="50" fill="currentColor" viewBox="0 0 60 50">
+                                <path d="m 0 0 l 60 50" fill="transparent" stroke-width="5" stroke="currentColor"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
