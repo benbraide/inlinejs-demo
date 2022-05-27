@@ -2,7 +2,7 @@
 
 A collection of demos for the [InlineJS](https://github.com/benbraide/InlineJS) reactive framework.
 
-![demo screenshot](https://github.com/benbraide/inlinejs-demo/screenshot.png)
+![demo screenshot](https://github.com/benbraide/inlinejs-demo/blob/main/screenshot.png?raw=true)
 
 ## Usage Guide
 
