@@ -87,6 +87,7 @@
     <template x-router:page.evaluate="{ path: '/', title: 'Home | InlineJS Demos' }" x-data></template>
     <template x-router:page.evaluate="{ path: /^\/?games(\/.+)?$/, title: 'Games | InlineJS Demos' }" x-data></template>
     <template x-router:page.evaluate="{ path: /^\/?apps(\/.+)?$/, title: 'Apps | InlineJS Demos' }" x-data></template>
+    <template x-router:page.evaluate="{ path: /^.+$/, title: 'User Added Page' }" x-data></template>
 
     <template x-router:mount.main x-transition.normal x-data></template>
     <template x-static="$router.setPrefix('pages'); $router.mount(true)" x-data></template>

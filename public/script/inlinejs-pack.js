@@ -727,7 +727,8 @@ const DataDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
                 setter: (prop, value) => {
                     var _a;
                     let scope = (_a = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)) === null || _a === void 0 ? void 0 : _a.GetRootProxy().GetNative()[scopeId];
-                    return ((scope && prop) ? (scope[prop] = value) : true);
+                    (scope && prop) && (scope[prop] = value);
+                    return true;
                 },
                 lookup: () => true,
             }));
@@ -738,7 +739,8 @@ const DataDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
                 },
                 setter: (prop, value) => {
                     let component = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId), parent = component === null || component === void 0 ? void 0 : component.FindElementLocalValue(((component === null || component === void 0 ? void 0 : component.FindAncestor(contextElement)) || ''), key, true);
-                    return ((parent && !(0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().IsNothing(parent) && prop) ? (parent[prop] = value) : true);
+                    (parent && !(0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().IsNothing(parent) && prop) && (parent[prop] = value);
+                    return true;
                 },
                 lookup: () => true,
             }));
@@ -755,7 +757,8 @@ const DataDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
             elementScope.SetLocal(key, (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildProxyOptions)({
                 getter: (prop) => (prop ? proxy[prop] : undefined),
                 setter: (prop, value) => {
-                    return (prop ? (proxy[prop] = value) : true);
+                    prop && (proxy[prop] = value);
+                    return true;
                 },
                 lookup: () => true,
             })));
@@ -1101,7 +1104,7 @@ const OnDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.C
             return; //Event is debounced OR event target is not context element OR specified key option is not pressed
         }
         if (keyOptions && keyOptions.list.length > 0) {
-            let key = e.key.toLowerCase();
+            let key = (e.key || '').toLowerCase();
             if (keyOptions.list.findIndex(item => (Array.isArray(item) ? item.includes(key) : (item === key))) == -1) {
                 return; //Key pressed doesn't match any specified
             }
@@ -2906,6 +2909,9 @@ function BindKeyboardType(component, contextElement, delay, callback) {
     });
 }
 const KeyboardDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateDirectiveHandlerCallback)('keyboard', ({ component, componentId, contextElement, expression, argKey, argOptions }) => {
+    if (!(expression = expression.trim())) {
+        return;
+    }
     let options = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.ResolveOptions)({
         options: {
             delay: -1,
@@ -2914,24 +2920,20 @@ const KeyboardDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE
         list: argOptions,
         defaultNumber: -1,
     });
-    let assign = (value) => {
-        (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement,
-            expression: `(${expression}) = (${JSON.stringify(value)})`,
-        })();
-    };
+    let evaluate = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression });
     if (argKey === 'inside') {
-        BindKeyboardInside(contextElement, (value, unbind) => {
-            assign(value);
+        BindKeyboardInside(contextElement, (inside, unbind) => {
+            evaluate(undefined, [inside], { inside });
             if (options.once) {
                 unbind();
             }
         });
     }
     else if (argKey === 'down' || argKey === 'up') {
-        BindKeyboardKey(contextElement, argKey, assign);
+        BindKeyboardKey(contextElement, argKey, key => evaluate(undefined, [key], { key }));
     }
     else if (argKey === 'type') {
-        BindKeyboardType((component || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)), contextElement, options.delay, assign);
+        BindKeyboardType((component || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)), contextElement, options.delay, typing => evaluate(undefined, [typing], { typing }));
     }
 });
 function KeyboardDirectiveHandlerCompact() {
@@ -3002,6 +3004,9 @@ function BindMouseMove(contextElement, callback) {
     contextElement.addEventListener('mouseleave', () => callback(null));
 }
 const MouseDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateDirectiveHandlerCallback)('mouse', ({ componentId, component, contextElement, expression, argKey, argOptions }) => {
+    if (!(expression = expression.trim())) {
+        return;
+    }
     let options = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.ResolveOptions)({
         options: {
             delay: -1,
@@ -3011,25 +3016,20 @@ const MouseDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0_
         list: argOptions,
         defaultNumber: -1,
     });
+    let evaluate = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression });
     if (argKey === 'repeat') {
-        let evaluate = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression });
         return BindMouseRepeat((component || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)), contextElement, options.delay, streak => evaluate(undefined, [streak], { streak }));
     }
-    let assign = (value) => {
-        (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement,
-            expression: `(${expression}) = (${JSON.stringify(value)})`,
-        })();
-    };
     if (argKey === 'inside') {
-        BindMouseInside(contextElement, (value, unbind) => {
-            assign(value);
+        BindMouseInside(contextElement, (inside, unbind) => {
+            evaluate(undefined, [inside], { inside });
             if (options.once) {
                 unbind();
             }
         });
     }
     else if (argKey === 'move') {
-        BindMouseMove(contextElement, assign);
+        BindMouseMove(contextElement, position => evaluate(undefined, [position], { position }));
     }
 });
 function MouseDirectiveHandlerCompact() {
@@ -4187,6 +4187,7 @@ class Changes {
     }
     AddNextTickHandler(handler) {
         this.nextTickHandlers_.push(handler);
+        this.Schedule();
     }
     Schedule() {
         if (this.isScheduled_) {
@@ -4671,7 +4672,7 @@ class ElementScope {
             return;
         }
         this.state_.isMarked = true;
-        if (!(this.element_ instanceof HTMLTemplateElement) && this.element_.tagName.toLowerCase() !== 'svg') {
+        if (!(this.element_ instanceof HTMLTemplateElement)) {
             let component = (0,_find__WEBPACK_IMPORTED_MODULE_6__.FindComponentById)(this.componentId_);
             if (component) {
                 this.DestroyChildren_(component, this.element_, (markOnly || false));
@@ -4712,7 +4713,7 @@ class ElementScope {
         return (this.managers_.directive = (this.managers_.directive || new _directive_manager__WEBPACK_IMPORTED_MODULE_0__.DirectiveManager()));
     }
     DestroyChildren_(component, target, markOnly) {
-        Array.from(target.children).forEach((child) => {
+        Array.from(target.children).filter(child => !child.contains(target)).forEach((child) => {
             let childScope = component.FindElementScope(child);
             if (childScope) { //Destroy element scope
                 childScope.Destroy(markOnly);
@@ -4994,8 +4995,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _directive_process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../directive/process */ "./node_modules/@benbraide/inlinejs/lib/esm/directive/process.js");
 /* harmony import */ var _directive_transition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../directive/transition */ "./node_modules/@benbraide/inlinejs/lib/esm/directive/transition.js");
-/* harmony import */ var _journal_try__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../journal/try */ "./node_modules/@benbraide/inlinejs/lib/esm/journal/try.js");
-/* harmony import */ var _find__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./find */ "./node_modules/@benbraide/inlinejs/lib/esm/component/find.js");
+/* harmony import */ var _global_get__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../global/get */ "./node_modules/@benbraide/inlinejs/lib/esm/global/get.js");
+/* harmony import */ var _journal_try__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../journal/try */ "./node_modules/@benbraide/inlinejs/lib/esm/journal/try.js");
+/* harmony import */ var _element_scope_id__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./element-scope-id */ "./node_modules/@benbraide/inlinejs/lib/esm/component/element-scope-id.js");
+/* harmony import */ var _find__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./find */ "./node_modules/@benbraide/inlinejs/lib/esm/component/find.js");
+
+
 
 
 
@@ -5010,8 +5015,8 @@ function InsertHtml({ element, html, type = 'replace', component, processDirecti
         else if (type === 'prepend') { //Insert before child nodes
             element.prepend(...Array.from(tmpl.content.childNodes));
         }
-        (afterInsert && (0,_journal_try__WEBPACK_IMPORTED_MODULE_2__.JournalTry)(afterInsert, 'InlineJS.InsertHtml', element));
-        let resolvedComponent = (0,_find__WEBPACK_IMPORTED_MODULE_3__.FindComponentById)(componentId);
+        (afterInsert && (0,_journal_try__WEBPACK_IMPORTED_MODULE_3__.JournalTry)(afterInsert, 'InlineJS.InsertHtml', element));
+        let resolvedComponent = (0,_find__WEBPACK_IMPORTED_MODULE_5__.FindComponentById)(componentId);
         if (processDirectives && resolvedComponent) {
             Array.from(element.children).forEach(child => (0,_directive_process__WEBPACK_IMPORTED_MODULE_0__.ProcessDirectives)({
                 component: resolvedComponent,
@@ -5034,10 +5039,11 @@ function InsertHtml({ element, html, type = 'replace', component, processDirecti
     };
     if (type === 'replace') { //Remove all child nodes
         let destroyOffspring = (el) => {
-            let resolvedComponent = (0,_find__WEBPACK_IMPORTED_MODULE_3__.FindComponentById)(componentId);
+            let resolvedComponent = (0,_find__WEBPACK_IMPORTED_MODULE_5__.FindComponentById)(componentId), global = (0,_global_get__WEBPACK_IMPORTED_MODULE_2__.GetGlobal)();
             Array.from(el.children).forEach((child) => {
+                var _a;
                 let elementScope = resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.FindElementScope(child);
-                if (elementScope) {
+                if (elementScope || (_element_scope_id__WEBPACK_IMPORTED_MODULE_4__.ElementScopeKey in child && (elementScope = (_a = global.InferComponentFrom(child)) === null || _a === void 0 ? void 0 : _a.FindElementScope(child)))) {
                     elementScope.Destroy();
                 }
                 else {
@@ -5781,7 +5787,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function CheckElement(element, { checkTemplate = true, checkDocument = true }) {
-    return ((element === null || element === void 0 ? void 0 : element.nodeType) === 1 && (!checkDocument || document.contains(element)) && (!checkTemplate || element instanceof HTMLTemplateElement || !element.closest('template')));
+    return ((element === null || element === void 0 ? void 0 : element.nodeType) === 1 &&
+        (!checkDocument || document.contains(element)) &&
+        (!checkTemplate || element instanceof HTMLTemplateElement || !element.closest('template')));
 }
 function ProcessDirectives({ component, element, options = {} }) {
     var _a;
@@ -5814,12 +5822,12 @@ function ProcessDirectives({ component, element, options = {} }) {
     });
     if (!options.ignoreChildren && !(element instanceof HTMLTemplateElement)) { //Process children
         resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.PushSelectionScope();
-        Array.from(element.children).forEach(child => ProcessDirectives({ component, options,
+        Array.from(element.children).filter(child => !child.contains(element)).forEach(child => ProcessDirectives({ component, options,
             element: child,
         }));
         resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.PopSelectionScope();
     }
-    (_a = resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.CreateElementScope(element)) === null || _a === void 0 ? void 0 : _a.ExecutePostProcessCallbacks();
+    (_a = resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.FindElementScope(element)) === null || _a === void 0 ? void 0 : _a.ExecutePostProcessCallbacks();
 }
 
 
@@ -6049,7 +6057,7 @@ function GenerateFunctionFromString({ componentId, contextElement, expression, d
             return null;
         };
     }
-    let runFunction = (handler, target, params, contexts, forwardSyntaxErrors = true) => {
+    let runFunction = (handler, target, params, contexts, forwardSyntaxErrors = true, waitMessage) => {
         var _a;
         let component = (0,_component_find__WEBPACK_IMPORTED_MODULE_1__.FindComponentById)(componentId), proxy = component === null || component === void 0 ? void 0 : component.GetRootProxy().GetNative();
         if (!proxy || ((_a = component === null || component === void 0 ? void 0 : component.FindElementScope(contextElement)) === null || _a === void 0 ? void 0 : _a.IsDestroyed())) {
@@ -6069,8 +6077,9 @@ function GenerateFunctionFromString({ componentId, contextElement, expression, d
                 return (disableFunctionCall ? result : CallIfFunction(result, handler, componentId, params));
             }
             let handleResult = (value) => {
-                if (waitPromise !== 'none') {
+                if (value && waitPromise !== 'none') {
                     (0,_wait_promise__WEBPACK_IMPORTED_MODULE_5__.WaitPromise)(value, handler, waitPromise === 'recursive');
+                    return (waitMessage || 'Loading data...');
                 }
                 else { //Immediate
                     handler(value);
@@ -6101,10 +6110,10 @@ function GenerateFunctionFromString({ componentId, contextElement, expression, d
     if (!valueReturnFunction) {
         voidFunction = GenerateVoidFunction(expression, contextElement, componentId);
     }
-    return (handler, params = [], contexts) => {
+    return (handler, params = [], contexts, waitMessage) => {
         if (!voidFunction && valueReturnFunction) {
             try {
-                return runFunction(handler, valueReturnFunction, (params || []), (contexts || {}));
+                return runFunction(handler, valueReturnFunction, (params || []), (contexts || {}), undefined, waitMessage);
             }
             catch (err) {
                 if (err instanceof SyntaxError) {
@@ -6540,6 +6549,7 @@ const InlineJSGlobalKey = '__InlineJS_GLOBAL_KEY__';
 function CreateGlobal(configOptions, idOffset = 0) {
     (0,_component_find__WEBPACK_IMPORTED_MODULE_0__.InitComponentCache)();
     globalThis[InlineJSGlobalKey] = new _base__WEBPACK_IMPORTED_MODULE_1__.BaseGlobal(configOptions, idOffset);
+    (globalThis['InlineJS'] = (globalThis['InlineJS'] || {}))['global'] = globalThis[InlineJSGlobalKey];
     window.dispatchEvent(new CustomEvent(_get__WEBPACK_IMPORTED_MODULE_2__.GlobalCreatedEvent));
     return globalThis[InlineJSGlobalKey];
 }
@@ -7474,21 +7484,32 @@ class MutationObserver {
                         });
                     };
                     entries.forEach((entry) => {
-                        var _a;
-                        let key = ((entry.target instanceof HTMLElement) ? (0,_component_element_scope_id__WEBPACK_IMPORTED_MODULE_0__.GetElementScopeId)(((_a = (0,_component_infer__WEBPACK_IMPORTED_MODULE_1__.InferComponent)(entry.target)) === null || _a === void 0 ? void 0 : _a.GetRoot()) || null) : '');
-                        if (!key) { //Invalid target
-                            return;
-                        }
+                        var _a, _b;
                         if ((entry === null || entry === void 0 ? void 0 : entry.type) === 'childList') {
-                            let info = getInfo(key);
-                            info.added.push(...Array.from(entry.addedNodes));
-                            info.removed.push(...Array.from(entry.removedNodes));
+                            let pushRemovedNode = (node) => {
+                                var _a;
+                                let key = (0,_component_element_scope_id__WEBPACK_IMPORTED_MODULE_0__.GetElementScopeId)(((_a = (0,_component_infer__WEBPACK_IMPORTED_MODULE_1__.InferComponent)(node)) === null || _a === void 0 ? void 0 : _a.GetRoot()) || null);
+                                if (key) {
+                                    getInfo(key).removed.push(node);
+                                }
+                                else { //Try children
+                                    Array.from(node.childNodes).filter(child => !child.contains(node)).forEach(pushRemovedNode);
+                                }
+                            };
+                            entry.removedNodes.forEach(pushRemovedNode);
+                            let key = ((entry.target instanceof HTMLElement) ? (0,_component_element_scope_id__WEBPACK_IMPORTED_MODULE_0__.GetElementScopeId)(((_a = (0,_component_infer__WEBPACK_IMPORTED_MODULE_1__.InferComponent)(entry.target)) === null || _a === void 0 ? void 0 : _a.GetRoot()) || null) : '');
+                            if (key) {
+                                getInfo(key).added.push(...Array.from(entry.addedNodes));
+                            }
                         }
                         else if ((entry === null || entry === void 0 ? void 0 : entry.type) === 'attributes' && entry.attributeName) {
-                            getInfo(key).attributes.push({
-                                name: entry.attributeName,
-                                target: entry.target,
-                            });
+                            let key = ((entry.target instanceof HTMLElement) ? (0,_component_element_scope_id__WEBPACK_IMPORTED_MODULE_0__.GetElementScopeId)(((_b = (0,_component_infer__WEBPACK_IMPORTED_MODULE_1__.InferComponent)(entry.target)) === null || _b === void 0 ? void 0 : _b.GetRoot()) || null) : '');
+                            if (key) {
+                                getInfo(key).attributes.push({
+                                    name: entry.attributeName,
+                                    target: entry.target,
+                                });
+                            }
                         }
                     });
                     if (Object.keys(mutations).length == 0) {
@@ -7685,13 +7706,13 @@ function CreateInplaceProxy({ target, getter, setter, deleter, lookup, alert }) 
             if (typeof prop === 'symbol' || (typeof prop === 'string' && prop === 'prototype')) {
                 return Reflect.set(target, prop, value);
             }
-            return (setter ? setter(prop.toString(), value, target) : (!!target[prop] || true));
+            return (setter ? (setter(prop.toString(), value, target) !== false) : (!!target[prop] || true));
         },
         deleteProperty(target, prop) {
             if (typeof prop === 'symbol' || (typeof prop === 'string' && prop === 'prototype')) {
                 return Reflect.deleteProperty(target, prop);
             }
-            return (deleter ? deleter(prop.toString(), target) : (!!(delete target[prop]) || true));
+            return (deleter ? (deleter(prop.toString(), target) !== false) : (!!(delete target[prop]) || true));
         },
         has(target, prop) {
             if (Reflect.has(target, prop)) {

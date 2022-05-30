@@ -40,7 +40,7 @@
         </template>
     </section>
 
-    <section class="mt-8" x-data>
+    <section class="mt-8" x-data="{ animationDuration: 450 }">
         <h3 class="mb-4 text-3xl font-bold">> Animations</h3>
         
         <template x-static="customs = { scale: $animation.scale({ axis: 'y', origin: { x: 'center', y: 'end' }, factor: 1 }) }"></template>
@@ -249,7 +249,7 @@
         <h3 class="mb-4 text-3xl font-bold">> Mouse Monitor</h3>
         <div class="flex flex-row justify-start items-center">
             <div class="w-56 h-56 flex flex-row justify-center items-center bg-red-700 text-white font-semibold rounded-md"
-                x-mouse:inside="inside">
+                x-mouse:inside="inside = $inside">
                 <p x-text="inside ? 'Mouse Inside' : 'Mouse Outside'"></p>
             </div>
             <div class="ml-4 w-56 h-56 flex flex-col justify-center items-center bg-green-700 text-white font-semibold rounded-md"
@@ -258,7 +258,7 @@
                 <p x-text="`Mouse Down Streak: ${streak || 0}`"></p>
             </div>
             <div class="ml-4 w-56 h-56 pl-8 flex flex-col justify-center items-start bg-blue-700 text-white font-semibold"
-                x-mouse:move="position">
+                x-mouse:move="position = $position">
                 <p x-text="`Client: x = ${position ? position.client.x : -1}, y = ${position ? position.client.y : -1}`"></p>
                 <p x-text="`Offset: x = ${position ? position.offset.x : -1}, y = ${position ? position.offset.y : -1}`"></p>
                 <p x-text="`Screen: x = ${position ? position.screen.x : -1}, y = ${position ? position.screen.y : -1}`"></p>
@@ -269,8 +269,8 @@
     <section class="mt-8" x-data>
         <h3 class="mb-4 text-3xl font-bold">> Keyboard Monitor</h3>
         <div class="flex flex-row justify-start items-center">
-            <div class="w-56 h-56 flex flex-col justify-center items-center bg-red-700 text-white font-semibold rounded-md" x-keyboard:inside="inside"
-                x-keyboard:type="typing">
+            <div class="w-56 h-56 flex flex-col justify-center items-center bg-red-700 text-white font-semibold rounded-md" x-keyboard:inside="inside = $inside"
+                x-keyboard:type="typing = $typing">
                 <p x-text="inside ? 'Focus Inside' : 'Focus Outside'"></p>
                 <p x-text="typing ? 'User is typing...' : 'Idle user'"></p>
                 <input type="text" placeholder="Type here" class="mt-2 w-36 px-4 py-2 text-black border rounded-md overflow-hidden">

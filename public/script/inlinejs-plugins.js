@@ -2,6 +2,140 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@benbraide/inlinejs-alert/lib/esm/index.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@benbraide/inlinejs-alert/lib/esm/index.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AlertMagicHandler": () => (/* reexport safe */ _magic_alert__WEBPACK_IMPORTED_MODULE_1__.AlertMagicHandler),
+/* harmony export */   "AlertMagicHandlerCompact": () => (/* reexport safe */ _magic_alert__WEBPACK_IMPORTED_MODULE_1__.AlertMagicHandlerCompact),
+/* harmony export */   "AlertMagicName": () => (/* reexport safe */ _names__WEBPACK_IMPORTED_MODULE_0__.AlertMagicName)
+/* harmony export */ });
+/* harmony import */ var _names__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./names */ "./node_modules/@benbraide/inlinejs-alert/lib/esm/names.js");
+/* harmony import */ var _magic_alert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./magic/alert */ "./node_modules/@benbraide/inlinejs-alert/lib/esm/magic/alert.js");
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@benbraide/inlinejs-alert/lib/esm/magic/alert.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@benbraide/inlinejs-alert/lib/esm/magic/alert.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AlertMagicHandler": () => (/* binding */ AlertMagicHandler),
+/* harmony export */   "AlertMagicHandlerCompact": () => (/* binding */ AlertMagicHandlerCompact)
+/* harmony export */ });
+/* harmony import */ var _benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @benbraide/inlinejs */ "./node_modules/@benbraide/inlinejs/lib/esm/index.js");
+/* harmony import */ var _names__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../names */ "./node_modules/@benbraide/inlinejs-alert/lib/esm/names.js");
+
+
+let AlertConceptName = '';
+let AlertHandler = null;
+function TransformNotifyOptions(options) {
+    if ((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(options)) {
+        options['icon'] = (options['icon'] || (options['error'] ? 'error' : (options['type'] || options['code'] || 'success')));
+        options['text'] = (options['text'] || options['message']);
+        options['toast'] = (!!options['toast'] || !!options['asToast']);
+        options['position'] = (options['position'] || (options['toast'] ? 'top-end' : 'center'));
+        options['timer'] = (options['timer'] || ((typeof options['duration'] === 'number') ? options['duration'] : ((options['duration'] === false) ? undefined : 5000)));
+    }
+    else {
+        options = {
+            icon: 'info',
+            title: 'Information',
+            text: options,
+            position: 'center',
+        };
+    }
+    return options;
+}
+function TransformConfirmOptions(options) {
+    if ((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(options)) {
+        options['icon'] = (options['icon'] || 'warning');
+        options['title'] = (options['title'] || 'Please confirm your action');
+        options['text'] = (options['text'] || options['message']);
+        options['confirmButtonText'] = (options['confirmButtonText'] || 'Yes, continue');
+        options['position'] = (options['position'] || 'center');
+        options['toast'] = false;
+        options['timer'] = undefined;
+    }
+    else {
+        options = {
+            icon: 'warning',
+            title: 'Please confirm your action',
+            text: options,
+            confirmButtonText: 'Yes, continue',
+            position: 'center',
+        };
+    }
+    return options;
+}
+function TransformPromptOptions(options) {
+    if ((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(options)) {
+        options['icon'] = (options['icon'] || 'info');
+        options['title'] = (options['title'] || 'Please enter details below');
+        options['text'] = (options['text'] || options['message']);
+        options['confirmButtonText'] = (options['confirmButtonText'] || 'Submit');
+        options['position'] = (options['position'] || 'center');
+        options['input'] = (options['input'] || options['type'] || 'text');
+        options['toast'] = false;
+        options['timer'] = undefined;
+    }
+    else {
+        options = {
+            icon: 'info',
+            title: 'Please enter details below',
+            text: options,
+            confirmButtonText: 'Submit',
+            position: 'center',
+            input: 'text',
+        };
+    }
+    return options;
+}
+function CreateAlertProxy() {
+    const getConcept = () => (AlertConceptName ? (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().GetConcept(AlertConceptName) : null);
+    let methods = {
+        setConceptName: (name) => (AlertConceptName = name),
+        setHandler: (handler) => (AlertHandler = handler),
+        notify: (options) => { var _a; return (_a = (AlertHandler || getConcept())) === null || _a === void 0 ? void 0 : _a.Notify(TransformNotifyOptions(options)); },
+        confirm: (options) => { var _a; return (_a = (AlertHandler || getConcept())) === null || _a === void 0 ? void 0 : _a.Confirm(TransformConfirmOptions(options)); },
+        prompt: (options) => { var _a; return (_a = (AlertHandler || getConcept())) === null || _a === void 0 ? void 0 : _a.Prompt(TransformPromptOptions(options)); },
+    };
+    return (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateReadonlyProxy)(methods);
+}
+const AlertProxy = CreateAlertProxy();
+const AlertMagicHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateMagicHandlerCallback)(_names__WEBPACK_IMPORTED_MODULE_1__.AlertMagicName, () => AlertProxy);
+function AlertMagicHandlerCompact() {
+    (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.AddMagicHandler)(AlertMagicHandler);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@benbraide/inlinejs-alert/lib/esm/names.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@benbraide/inlinejs-alert/lib/esm/names.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AlertMagicName": () => (/* binding */ AlertMagicName)
+/* harmony export */ });
+const AlertMagicName = 'alert';
+
+
+/***/ }),
+
 /***/ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/add.js":
 /*!**************************************************************************!*\
   !*** ./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/add.js ***!
@@ -1184,6 +1318,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "AnimateDirectiveHandlerCompact": () => (/* binding */ AnimateDirectiveHandlerCompact)
 /* harmony export */ });
 /* harmony import */ var _benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @benbraide/inlinejs */ "./node_modules/@benbraide/inlinejs/lib/esm/index.js");
+/* harmony import */ var _utilities_find_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/find-data */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/utilities/find-data.js");
 var __rest = (undefined && undefined.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -1195,6 +1330,7 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
         }
     return t;
 };
+
 
 const AnimateDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateDirectiveHandlerCallback)('animate', (_a) => {
     var _b, _c, _d, _e, _f, _g, _h, _j;
@@ -1234,13 +1370,14 @@ const AnimateDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_
             }
         };
         let begin = (reverse) => {
+            var _a;
             checkpoint += 1;
             if (options.inner) {
                 childIndex = 0;
                 handleInner(reverse);
             }
             else {
-                waitTransition(reverse, undefined, () => repeat(options.alternate ? !reverse : reverse));
+                waitTransition(reverse, (_a = (0,_utilities_find_data__WEBPACK_IMPORTED_MODULE_1__.FindTransitionData)({ componentId, contextElement })) === null || _a === void 0 ? void 0 : _a.target, () => repeat(options.alternate ? !reverse : reverse));
             }
         };
         let repeat = (reverse) => {
@@ -1313,6 +1450,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TransitionDirectiveHandlerCompact": () => (/* binding */ TransitionDirectiveHandlerCompact)
 /* harmony export */ });
 /* harmony import */ var _benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @benbraide/inlinejs */ "./node_modules/@benbraide/inlinejs/lib/esm/index.js");
+/* harmony import */ var _utilities_find_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utilities/find-data */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/utilities/find-data.js");
 var __rest = (undefined && undefined.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -1324,6 +1462,7 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
         }
     return t;
 };
+
 
 function HandleNumeric({ data, key, defaultValue, componentId, contextElement, expression, isDuration }) {
     if ((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().IsNothing(data)) {
@@ -1342,9 +1481,9 @@ function HandleNumeric({ data, key, defaultValue, componentId, contextElement, e
     });
 }
 function GetData({ componentId, component, contextElement, argOptions }) {
-    var _a, _b, _c, _d;
-    let data = (_b = (_a = (component || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId))) === null || _a === void 0 ? void 0 : _a.FindElementScope(contextElement)) === null || _b === void 0 ? void 0 : _b.GetData('transition');
-    if (!data || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().IsNothing(data)) {
+    var _a, _b;
+    let data = (0,_utilities_find_data__WEBPACK_IMPORTED_MODULE_1__.FindTransitionData)({ componentId, component, contextElement });
+    if (!data) {
         data = {
             actor: null,
             ease: null,
@@ -1353,7 +1492,7 @@ function GetData({ componentId, component, contextElement, argOptions }) {
             delay: _benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.DefaultTransitionDelay,
             allowed: (!argOptions.includes('normal') ? (argOptions.includes('reversed') ? 'reversed' : 'both') : 'normal'),
         };
-        (_d = (_c = (component || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId))) === null || _c === void 0 ? void 0 : _c.FindElementScope(contextElement)) === null || _d === void 0 ? void 0 : _d.SetData('transition', data);
+        (_b = (_a = (component || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId))) === null || _a === void 0 ? void 0 : _a.FindElementScope(contextElement)) === null || _b === void 0 ? void 0 : _b.SetData('transition', data);
     }
     return data;
 }
@@ -1386,7 +1525,7 @@ const TransitionDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODU
         });
     }
     else if (argKey === 'ease' && !(0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().IsNothing(data)) {
-        let evaluate = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression }), updateEase = (value) => {
+        let evaluate = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression, disableFunctionCall: true }), updateEase = (value) => {
             var _a;
             if (typeof value === 'string') {
                 data.ease = (((_a = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().GetConcept('animation')) === null || _a === void 0 ? void 0 : _a.GetEaseCollection().Find(value)) || null);
@@ -1399,6 +1538,12 @@ const TransitionDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODU
             callback: () => evaluate(updateEase),
         });
     }
+    else if (argKey === 'target') {
+        let evaluate = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression });
+        (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.UseEffect)({ componentId, contextElement,
+            callback: () => evaluate(value => (data.target = ((value instanceof HTMLElement) ? value : undefined))),
+        });
+    }
     else if (argKey === 'duration') {
         HandleNumeric({ data, componentId, contextElement, expression, key: argKey, defaultValue: 300, isDuration: true });
     }
@@ -1406,7 +1551,7 @@ const TransitionDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODU
         HandleNumeric({ data, componentId, contextElement, expression, key: argKey, defaultValue: 0, isDuration: (argKey === 'delay') });
     }
     else { //Check for object
-        (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression, disableFunctionCall: true })((value) => {
+        (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression })((value) => {
             if ((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(value)) { //Copy props
                 Object.entries(value).forEach(([key, value]) => (data[key] = value));
             }
@@ -2069,229 +2214,234 @@ function SineInOutAnimationEaseCompact() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AddAnimationActor": () => (/* reexport safe */ _actors_add__WEBPACK_IMPORTED_MODULE_17__.AddAnimationActor),
-/* harmony export */   "AddAnimationEase": () => (/* reexport safe */ _easing_add__WEBPACK_IMPORTED_MODULE_0__.AddAnimationEase),
-/* harmony export */   "AnimateDirectiveHandler": () => (/* reexport safe */ _directive_animate__WEBPACK_IMPORTED_MODULE_55__.AnimateDirectiveHandler),
-/* harmony export */   "AnimateDirectiveHandlerCompact": () => (/* reexport safe */ _directive_animate__WEBPACK_IMPORTED_MODULE_55__.AnimateDirectiveHandlerCompact),
-/* harmony export */   "AnimationActorCollection": () => (/* reexport safe */ _collection_actor__WEBPACK_IMPORTED_MODULE_52__.AnimationActorCollection),
-/* harmony export */   "AnimationConcept": () => (/* reexport safe */ _concept__WEBPACK_IMPORTED_MODULE_58__.AnimationConcept),
-/* harmony export */   "AnimationCreatorCollection": () => (/* reexport safe */ _collection_creator__WEBPACK_IMPORTED_MODULE_53__.AnimationCreatorCollection),
-/* harmony export */   "AnimationEaseCollection": () => (/* reexport safe */ _collection_ease__WEBPACK_IMPORTED_MODULE_54__.AnimationEaseCollection),
-/* harmony export */   "AnimationMagicHandler": () => (/* reexport safe */ _magic_animation__WEBPACK_IMPORTED_MODULE_57__.AnimationMagicHandler),
-/* harmony export */   "AnimationMagicHandlerCompact": () => (/* reexport safe */ _magic_animation__WEBPACK_IMPORTED_MODULE_57__.AnimationMagicHandlerCompact),
-/* harmony export */   "ApplyRange": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_31__.ApplyRange),
-/* harmony export */   "ApplyRangeAndTransform": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_31__.ApplyRangeAndTransform),
-/* harmony export */   "ApplyTransform": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_31__.ApplyTransform),
-/* harmony export */   "BackAnimationEase": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_1__.BackAnimationEase),
-/* harmony export */   "BackAnimationEaseCompact": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_1__.BackAnimationEaseCompact),
-/* harmony export */   "BackInAnimationEase": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_1__.BackInAnimationEase),
-/* harmony export */   "BackInAnimationEaseCompact": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_1__.BackInAnimationEaseCompact),
-/* harmony export */   "BackInOutAnimationEase": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_1__.BackInOutAnimationEase),
-/* harmony export */   "BackInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_1__.BackInOutAnimationEaseCompact),
-/* harmony export */   "BackOutAnimationEase": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_1__.BackOutAnimationEase),
-/* harmony export */   "BackOutAnimationEaseCompact": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_1__.BackOutAnimationEaseCompact),
-/* harmony export */   "BezierAnimationEaseCreator": () => (/* reexport safe */ _creators_bezier__WEBPACK_IMPORTED_MODULE_41__.BezierAnimationEaseCreator),
-/* harmony export */   "BounceAnimationEase": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_3__.BounceAnimationEase),
-/* harmony export */   "BounceAnimationEaseCompact": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_3__.BounceAnimationEaseCompact),
-/* harmony export */   "BounceInAnimationEase": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_3__.BounceInAnimationEase),
-/* harmony export */   "BounceInAnimationEaseCompact": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_3__.BounceInAnimationEaseCompact),
-/* harmony export */   "BounceInOutAnimationEase": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_3__.BounceInOutAnimationEase),
-/* harmony export */   "BounceInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_3__.BounceInOutAnimationEaseCompact),
-/* harmony export */   "BounceOutAnimationEase": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_3__.BounceOutAnimationEase),
-/* harmony export */   "BounceOutAnimationEaseCompact": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_3__.BounceOutAnimationEaseCompact),
-/* harmony export */   "CallAnimationActor": () => (/* reexport safe */ _actors_call__WEBPACK_IMPORTED_MODULE_18__.CallAnimationActor),
-/* harmony export */   "CallAnimationEase": () => (/* reexport safe */ _easing_call__WEBPACK_IMPORTED_MODULE_4__.CallAnimationEase),
-/* harmony export */   "CircleAnimationEase": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_6__.CircleAnimationEase),
-/* harmony export */   "CircleAnimationEaseCompact": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_6__.CircleAnimationEaseCompact),
-/* harmony export */   "CircleInAnimationEase": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_6__.CircleInAnimationEase),
-/* harmony export */   "CircleInAnimationEaseCompact": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_6__.CircleInAnimationEaseCompact),
-/* harmony export */   "CircleInOutAnimationEase": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_6__.CircleInOutAnimationEase),
-/* harmony export */   "CircleInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_6__.CircleInOutAnimationEaseCompact),
-/* harmony export */   "CircleOutAnimationEase": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_6__.CircleOutAnimationEase),
-/* harmony export */   "CircleOutAnimationEaseCompact": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_6__.CircleOutAnimationEaseCompact),
-/* harmony export */   "CreateAnimationActorCallback": () => (/* reexport safe */ _actors_callback__WEBPACK_IMPORTED_MODULE_19__.CreateAnimationActorCallback),
-/* harmony export */   "CreateAnimationEaseCallback": () => (/* reexport safe */ _easing_callback__WEBPACK_IMPORTED_MODULE_5__.CreateAnimationEaseCallback),
-/* harmony export */   "CreateBezierAnimationEaseCallback": () => (/* reexport safe */ _easing_bezier__WEBPACK_IMPORTED_MODULE_2__.CreateBezierAnimationEaseCallback),
-/* harmony export */   "CreateRotateAnimationActor": () => (/* reexport safe */ _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_24__.CreateRotateAnimationActor),
-/* harmony export */   "CreateRotateAnimationCallback": () => (/* reexport safe */ _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_24__.CreateRotateAnimationCallback),
-/* harmony export */   "CreateScaleAnimationActor": () => (/* reexport safe */ _actors_scale_generic__WEBPACK_IMPORTED_MODULE_27__.CreateScaleAnimationActor),
-/* harmony export */   "CreateScaleAnimationCallback": () => (/* reexport safe */ _actors_scale_generic__WEBPACK_IMPORTED_MODULE_27__.CreateScaleAnimationCallback),
-/* harmony export */   "CreateSceneAnimationActor": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_31__.CreateSceneAnimationActor),
-/* harmony export */   "CreateSceneAnimationCallback": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_31__.CreateSceneAnimationCallback),
-/* harmony export */   "CreateTranslateAnimationActor": () => (/* reexport safe */ _actors_translate_generic__WEBPACK_IMPORTED_MODULE_36__.CreateTranslateAnimationActor),
-/* harmony export */   "CreateTranslateAnimationCallback": () => (/* reexport safe */ _actors_translate_generic__WEBPACK_IMPORTED_MODULE_36__.CreateTranslateAnimationCallback),
-/* harmony export */   "CubicAnimationEase": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_7__.CubicAnimationEase),
-/* harmony export */   "CubicAnimationEaseCompact": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_7__.CubicAnimationEaseCompact),
-/* harmony export */   "CubicInAnimationEase": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_7__.CubicInAnimationEase),
-/* harmony export */   "CubicInAnimationEaseCompact": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_7__.CubicInAnimationEaseCompact),
-/* harmony export */   "CubicInOutAnimationEase": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_7__.CubicInOutAnimationEase),
-/* harmony export */   "CubicInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_7__.CubicInOutAnimationEaseCompact),
-/* harmony export */   "CubicOutAnimationEase": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_7__.CubicOutAnimationEase),
-/* harmony export */   "CubicOutAnimationEaseCompact": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_7__.CubicOutAnimationEaseCompact),
-/* harmony export */   "DefaultAnimationActor": () => (/* reexport safe */ _actors_default__WEBPACK_IMPORTED_MODULE_20__.DefaultAnimationActor),
-/* harmony export */   "DefaultAnimationActorCompact": () => (/* reexport safe */ _actors_default__WEBPACK_IMPORTED_MODULE_20__.DefaultAnimationActorCompact),
-/* harmony export */   "DefaultAnimationEase": () => (/* reexport safe */ _easing_default__WEBPACK_IMPORTED_MODULE_8__.DefaultAnimationEase),
-/* harmony export */   "DefaultAnimationEaseCompact": () => (/* reexport safe */ _easing_default__WEBPACK_IMPORTED_MODULE_8__.DefaultAnimationEaseCompact),
-/* harmony export */   "DefaultRotateAnimationActorFactor": () => (/* reexport safe */ _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_24__.DefaultRotateAnimationActorFactor),
-/* harmony export */   "DefaultRotateAnimationActorUnit": () => (/* reexport safe */ _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_24__.DefaultRotateAnimationActorUnit),
-/* harmony export */   "DefaultTranslateAnimationActorFactor": () => (/* reexport safe */ _actors_translate_generic__WEBPACK_IMPORTED_MODULE_36__.DefaultTranslateAnimationActorFactor),
-/* harmony export */   "DefaultTranslateAnimationActorUnit": () => (/* reexport safe */ _actors_translate_generic__WEBPACK_IMPORTED_MODULE_36__.DefaultTranslateAnimationActorUnit),
-/* harmony export */   "ElasticAnimationEase": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_9__.ElasticAnimationEase),
-/* harmony export */   "ElasticAnimationEaseCompact": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_9__.ElasticAnimationEaseCompact),
-/* harmony export */   "ElasticInAnimationEase": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_9__.ElasticInAnimationEase),
-/* harmony export */   "ElasticInAnimationEaseCompact": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_9__.ElasticInAnimationEaseCompact),
-/* harmony export */   "ElasticInOutAnimationEase": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_9__.ElasticInOutAnimationEase),
-/* harmony export */   "ElasticInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_9__.ElasticInOutAnimationEaseCompact),
-/* harmony export */   "ElasticOutAnimationEase": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_9__.ElasticOutAnimationEase),
-/* harmony export */   "ElasticOutAnimationEaseCompact": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_9__.ElasticOutAnimationEaseCompact),
-/* harmony export */   "ExponentialAnimationEase": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_10__.ExponentialAnimationEase),
-/* harmony export */   "ExponentialAnimationEaseCompact": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_10__.ExponentialAnimationEaseCompact),
-/* harmony export */   "ExponentialInAnimationEase": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_10__.ExponentialInAnimationEase),
-/* harmony export */   "ExponentialInAnimationEaseCompact": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_10__.ExponentialInAnimationEaseCompact),
-/* harmony export */   "ExponentialInOutAnimationEase": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_10__.ExponentialInOutAnimationEase),
-/* harmony export */   "ExponentialInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_10__.ExponentialInOutAnimationEaseCompact),
-/* harmony export */   "ExponentialOutAnimationEase": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_10__.ExponentialOutAnimationEase),
-/* harmony export */   "ExponentialOutAnimationEaseCompact": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_10__.ExponentialOutAnimationEaseCompact),
-/* harmony export */   "FlipAnimationActor": () => (/* reexport safe */ _actors_rotate_flip__WEBPACK_IMPORTED_MODULE_23__.FlipAnimationActor),
-/* harmony export */   "FlipAnimationActorCompact": () => (/* reexport safe */ _actors_rotate_flip__WEBPACK_IMPORTED_MODULE_23__.FlipAnimationActorCompact),
-/* harmony export */   "FormatValue": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_31__.FormatValue),
-/* harmony export */   "HeartbeatAnimationActor": () => (/* reexport safe */ _actors_scene_heartbeat__WEBPACK_IMPORTED_MODULE_32__.HeartbeatAnimationActor),
-/* harmony export */   "HeartbeatAnimationActorCompact": () => (/* reexport safe */ _actors_scene_heartbeat__WEBPACK_IMPORTED_MODULE_32__.HeartbeatAnimationActorCompact),
-/* harmony export */   "HeightAnimationActor": () => (/* reexport safe */ _actors_scale_height__WEBPACK_IMPORTED_MODULE_28__.HeightAnimationActor),
-/* harmony export */   "HeightAnimationActorCompact": () => (/* reexport safe */ _actors_scale_height__WEBPACK_IMPORTED_MODULE_28__.HeightAnimationActorCompact),
-/* harmony export */   "InvertAnimationEase": () => (/* reexport safe */ _easing_invert__WEBPACK_IMPORTED_MODULE_11__.InvertAnimationEase),
-/* harmony export */   "JelloAnimationCreator": () => (/* reexport safe */ _creators_jello__WEBPACK_IMPORTED_MODULE_42__.JelloAnimationCreator),
-/* harmony export */   "LinearAnimationEase": () => (/* reexport safe */ _easing_linear__WEBPACK_IMPORTED_MODULE_12__.LinearAnimationEase),
-/* harmony export */   "LinearAnimationEaseCompact": () => (/* reexport safe */ _easing_linear__WEBPACK_IMPORTED_MODULE_12__.LinearAnimationEaseCompact),
-/* harmony export */   "NullAnimationActor": () => (/* reexport safe */ _actors_null__WEBPACK_IMPORTED_MODULE_21__.NullAnimationActor),
-/* harmony export */   "NullAnimationActorCompact": () => (/* reexport safe */ _actors_null__WEBPACK_IMPORTED_MODULE_21__.NullAnimationActorCompact),
-/* harmony export */   "OpacityAnimationActor": () => (/* reexport safe */ _actors_opacity__WEBPACK_IMPORTED_MODULE_22__.OpacityAnimationActor),
-/* harmony export */   "OpacityAnimationActorCompact": () => (/* reexport safe */ _actors_opacity__WEBPACK_IMPORTED_MODULE_22__.OpacityAnimationActorCompact),
-/* harmony export */   "PulseAnimationActor": () => (/* reexport safe */ _actors_scene_pulse__WEBPACK_IMPORTED_MODULE_33__.PulseAnimationActor),
-/* harmony export */   "PulseAnimationActorCompact": () => (/* reexport safe */ _actors_scene_pulse__WEBPACK_IMPORTED_MODULE_33__.PulseAnimationActorCompact),
-/* harmony export */   "QuadraticAnimationEase": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__.QuadraticAnimationEase),
-/* harmony export */   "QuadraticAnimationEaseCompact": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__.QuadraticAnimationEaseCompact),
-/* harmony export */   "QuadraticInAnimationEase": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__.QuadraticInAnimationEase),
-/* harmony export */   "QuadraticInAnimationEaseCompact": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__.QuadraticInAnimationEaseCompact),
-/* harmony export */   "QuadraticInOutAnimationEase": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__.QuadraticInOutAnimationEase),
-/* harmony export */   "QuadraticInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__.QuadraticInOutAnimationEaseCompact),
-/* harmony export */   "QuadraticOutAnimationEase": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__.QuadraticOutAnimationEase),
-/* harmony export */   "QuadraticOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__.QuadraticOutAnimationEaseCompact),
-/* harmony export */   "QuartAnimationEase": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_14__.QuartAnimationEase),
-/* harmony export */   "QuartAnimationEaseCompact": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_14__.QuartAnimationEaseCompact),
-/* harmony export */   "QuartInAnimationEase": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_14__.QuartInAnimationEase),
-/* harmony export */   "QuartInAnimationEaseCompact": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_14__.QuartInAnimationEaseCompact),
-/* harmony export */   "QuartInOutAnimationEase": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_14__.QuartInOutAnimationEase),
-/* harmony export */   "QuartInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_14__.QuartInOutAnimationEaseCompact),
-/* harmony export */   "QuartOutAnimationEase": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_14__.QuartOutAnimationEase),
-/* harmony export */   "QuartOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_14__.QuartOutAnimationEaseCompact),
-/* harmony export */   "QuintAnimationEase": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_15__.QuintAnimationEase),
-/* harmony export */   "QuintAnimationEaseCompact": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_15__.QuintAnimationEaseCompact),
-/* harmony export */   "QuintInAnimationEase": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_15__.QuintInAnimationEase),
-/* harmony export */   "QuintInAnimationEaseCompact": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_15__.QuintInAnimationEaseCompact),
-/* harmony export */   "QuintInOutAnimationEase": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_15__.QuintInOutAnimationEase),
-/* harmony export */   "QuintInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_15__.QuintInOutAnimationEaseCompact),
-/* harmony export */   "QuintOutAnimationEase": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_15__.QuintOutAnimationEase),
-/* harmony export */   "QuintOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_15__.QuintOutAnimationEaseCompact),
-/* harmony export */   "RotateAnimationCreator": () => (/* reexport safe */ _creators_rotate__WEBPACK_IMPORTED_MODULE_43__.RotateAnimationCreator),
-/* harmony export */   "RubberbandAnimationCreator": () => (/* reexport safe */ _creators_rubberband__WEBPACK_IMPORTED_MODULE_44__.RubberbandAnimationCreator),
-/* harmony export */   "ScaleAnimationCreator": () => (/* reexport safe */ _creators_scale__WEBPACK_IMPORTED_MODULE_45__.ScaleAnimationCreator),
-/* harmony export */   "SceneAnimationCreator": () => (/* reexport safe */ _creators_scene__WEBPACK_IMPORTED_MODULE_46__.SceneAnimationCreator),
-/* harmony export */   "ShakeAnimationActor": () => (/* reexport safe */ _actors_scene_shake__WEBPACK_IMPORTED_MODULE_34__.ShakeAnimationActor),
-/* harmony export */   "ShakeAnimationActorCompact": () => (/* reexport safe */ _actors_scene_shake__WEBPACK_IMPORTED_MODULE_34__.ShakeAnimationActorCompact),
-/* harmony export */   "ShakeAnimationCreator": () => (/* reexport safe */ _creators_shake__WEBPACK_IMPORTED_MODULE_47__.ShakeAnimationCreator),
-/* harmony export */   "SineAnimationEase": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_16__.SineAnimationEase),
-/* harmony export */   "SineAnimationEaseCompact": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_16__.SineAnimationEaseCompact),
-/* harmony export */   "SineInAnimationEase": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_16__.SineInAnimationEase),
-/* harmony export */   "SineInAnimationEaseCompact": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_16__.SineInAnimationEaseCompact),
-/* harmony export */   "SineInOutAnimationEase": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_16__.SineInOutAnimationEase),
-/* harmony export */   "SineInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_16__.SineInOutAnimationEaseCompact),
-/* harmony export */   "SineOutAnimationEase": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_16__.SineOutAnimationEase),
-/* harmony export */   "SineOutAnimationEaseCompact": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_16__.SineOutAnimationEaseCompact),
-/* harmony export */   "SlideDownAnimationActor": () => (/* reexport safe */ _actors_translate_slide_down__WEBPACK_IMPORTED_MODULE_37__.SlideDownAnimationActor),
-/* harmony export */   "SlideDownAnimationActorCompact": () => (/* reexport safe */ _actors_translate_slide_down__WEBPACK_IMPORTED_MODULE_37__.SlideDownAnimationActorCompact),
-/* harmony export */   "SlideLeftAnimationActor": () => (/* reexport safe */ _actors_translate_slide_left__WEBPACK_IMPORTED_MODULE_38__.SlideLeftAnimationActor),
-/* harmony export */   "SlideLeftAnimationActorCompact": () => (/* reexport safe */ _actors_translate_slide_left__WEBPACK_IMPORTED_MODULE_38__.SlideLeftAnimationActorCompact),
-/* harmony export */   "SlideRightAnimationActor": () => (/* reexport safe */ _actors_translate_slide_right__WEBPACK_IMPORTED_MODULE_39__.SlideRightAnimationActor),
-/* harmony export */   "SlideRightAnimationActorCompact": () => (/* reexport safe */ _actors_translate_slide_right__WEBPACK_IMPORTED_MODULE_39__.SlideRightAnimationActorCompact),
-/* harmony export */   "SlideUpAnimationActor": () => (/* reexport safe */ _actors_translate_slide_up__WEBPACK_IMPORTED_MODULE_40__.SlideUpAnimationActor),
-/* harmony export */   "SlideUpAnimationActorCompact": () => (/* reexport safe */ _actors_translate_slide_up__WEBPACK_IMPORTED_MODULE_40__.SlideUpAnimationActorCompact),
-/* harmony export */   "SpinAnimationActor": () => (/* reexport safe */ _actors_rotate_spin__WEBPACK_IMPORTED_MODULE_25__.SpinAnimationActor),
-/* harmony export */   "SpinAnimationActorCompact": () => (/* reexport safe */ _actors_rotate_spin__WEBPACK_IMPORTED_MODULE_25__.SpinAnimationActorCompact),
-/* harmony export */   "SwingAnimationCreator": () => (/* reexport safe */ _creators_swing__WEBPACK_IMPORTED_MODULE_48__.SwingAnimationCreator),
-/* harmony export */   "TadaAnimationCreator": () => (/* reexport safe */ _creators_tada__WEBPACK_IMPORTED_MODULE_49__.TadaAnimationCreator),
-/* harmony export */   "TossAnimationActor": () => (/* reexport safe */ _actors_rotate_toss__WEBPACK_IMPORTED_MODULE_26__.TossAnimationActor),
-/* harmony export */   "TossAnimationActorCompact": () => (/* reexport safe */ _actors_rotate_toss__WEBPACK_IMPORTED_MODULE_26__.TossAnimationActorCompact),
-/* harmony export */   "TransitionDirectiveHandler": () => (/* reexport safe */ _directive_transition__WEBPACK_IMPORTED_MODULE_56__.TransitionDirectiveHandler),
-/* harmony export */   "TransitionDirectiveHandlerCompact": () => (/* reexport safe */ _directive_transition__WEBPACK_IMPORTED_MODULE_56__.TransitionDirectiveHandlerCompact),
-/* harmony export */   "TranslateAnimationCreator": () => (/* reexport safe */ _creators_translate__WEBPACK_IMPORTED_MODULE_50__.TranslateAnimationCreator),
-/* harmony export */   "VibrateAnimationActor": () => (/* reexport safe */ _actors_scene_vibrate__WEBPACK_IMPORTED_MODULE_35__.VibrateAnimationActor),
-/* harmony export */   "VibrateAnimationActorCompact": () => (/* reexport safe */ _actors_scene_vibrate__WEBPACK_IMPORTED_MODULE_35__.VibrateAnimationActorCompact),
-/* harmony export */   "VibrateAnimationCreator": () => (/* reexport safe */ _creators_vibrate__WEBPACK_IMPORTED_MODULE_51__.VibrateAnimationCreator),
-/* harmony export */   "WidthAnimationActor": () => (/* reexport safe */ _actors_scale_width__WEBPACK_IMPORTED_MODULE_29__.WidthAnimationActor),
-/* harmony export */   "WidthAnimationActorCompact": () => (/* reexport safe */ _actors_scale_width__WEBPACK_IMPORTED_MODULE_29__.WidthAnimationActorCompact),
-/* harmony export */   "ZoomAnimationActor": () => (/* reexport safe */ _actors_scale_zoom__WEBPACK_IMPORTED_MODULE_30__.ZoomAnimationActor),
-/* harmony export */   "ZoomAnimationActorCompact": () => (/* reexport safe */ _actors_scale_zoom__WEBPACK_IMPORTED_MODULE_30__.ZoomAnimationActorCompact)
+/* harmony export */   "AddAnimationActor": () => (/* reexport safe */ _actors_add__WEBPACK_IMPORTED_MODULE_19__.AddAnimationActor),
+/* harmony export */   "AddAnimationEase": () => (/* reexport safe */ _easing_add__WEBPACK_IMPORTED_MODULE_2__.AddAnimationEase),
+/* harmony export */   "AnimateDirectiveHandler": () => (/* reexport safe */ _directive_animate__WEBPACK_IMPORTED_MODULE_57__.AnimateDirectiveHandler),
+/* harmony export */   "AnimateDirectiveHandlerCompact": () => (/* reexport safe */ _directive_animate__WEBPACK_IMPORTED_MODULE_57__.AnimateDirectiveHandlerCompact),
+/* harmony export */   "AnimationActorCollection": () => (/* reexport safe */ _collection_actor__WEBPACK_IMPORTED_MODULE_54__.AnimationActorCollection),
+/* harmony export */   "AnimationConcept": () => (/* reexport safe */ _concept__WEBPACK_IMPORTED_MODULE_60__.AnimationConcept),
+/* harmony export */   "AnimationCreatorCollection": () => (/* reexport safe */ _collection_creator__WEBPACK_IMPORTED_MODULE_55__.AnimationCreatorCollection),
+/* harmony export */   "AnimationEaseCollection": () => (/* reexport safe */ _collection_ease__WEBPACK_IMPORTED_MODULE_56__.AnimationEaseCollection),
+/* harmony export */   "AnimationMagicHandler": () => (/* reexport safe */ _magic_animation__WEBPACK_IMPORTED_MODULE_59__.AnimationMagicHandler),
+/* harmony export */   "AnimationMagicHandlerCompact": () => (/* reexport safe */ _magic_animation__WEBPACK_IMPORTED_MODULE_59__.AnimationMagicHandlerCompact),
+/* harmony export */   "ApplyRange": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_33__.ApplyRange),
+/* harmony export */   "ApplyRangeAndTransform": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_33__.ApplyRangeAndTransform),
+/* harmony export */   "ApplyTransform": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_33__.ApplyTransform),
+/* harmony export */   "BackAnimationEase": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_3__.BackAnimationEase),
+/* harmony export */   "BackAnimationEaseCompact": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_3__.BackAnimationEaseCompact),
+/* harmony export */   "BackInAnimationEase": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_3__.BackInAnimationEase),
+/* harmony export */   "BackInAnimationEaseCompact": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_3__.BackInAnimationEaseCompact),
+/* harmony export */   "BackInOutAnimationEase": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_3__.BackInOutAnimationEase),
+/* harmony export */   "BackInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_3__.BackInOutAnimationEaseCompact),
+/* harmony export */   "BackOutAnimationEase": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_3__.BackOutAnimationEase),
+/* harmony export */   "BackOutAnimationEaseCompact": () => (/* reexport safe */ _easing_back__WEBPACK_IMPORTED_MODULE_3__.BackOutAnimationEaseCompact),
+/* harmony export */   "BezierAnimationEaseCreator": () => (/* reexport safe */ _creators_bezier__WEBPACK_IMPORTED_MODULE_43__.BezierAnimationEaseCreator),
+/* harmony export */   "BounceAnimationEase": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_5__.BounceAnimationEase),
+/* harmony export */   "BounceAnimationEaseCompact": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_5__.BounceAnimationEaseCompact),
+/* harmony export */   "BounceInAnimationEase": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_5__.BounceInAnimationEase),
+/* harmony export */   "BounceInAnimationEaseCompact": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_5__.BounceInAnimationEaseCompact),
+/* harmony export */   "BounceInOutAnimationEase": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_5__.BounceInOutAnimationEase),
+/* harmony export */   "BounceInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_5__.BounceInOutAnimationEaseCompact),
+/* harmony export */   "BounceOutAnimationEase": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_5__.BounceOutAnimationEase),
+/* harmony export */   "BounceOutAnimationEaseCompact": () => (/* reexport safe */ _easing_bounce__WEBPACK_IMPORTED_MODULE_5__.BounceOutAnimationEaseCompact),
+/* harmony export */   "CallAnimationActor": () => (/* reexport safe */ _actors_call__WEBPACK_IMPORTED_MODULE_20__.CallAnimationActor),
+/* harmony export */   "CallAnimationEase": () => (/* reexport safe */ _easing_call__WEBPACK_IMPORTED_MODULE_6__.CallAnimationEase),
+/* harmony export */   "CircleAnimationEase": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_8__.CircleAnimationEase),
+/* harmony export */   "CircleAnimationEaseCompact": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_8__.CircleAnimationEaseCompact),
+/* harmony export */   "CircleInAnimationEase": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_8__.CircleInAnimationEase),
+/* harmony export */   "CircleInAnimationEaseCompact": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_8__.CircleInAnimationEaseCompact),
+/* harmony export */   "CircleInOutAnimationEase": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_8__.CircleInOutAnimationEase),
+/* harmony export */   "CircleInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_8__.CircleInOutAnimationEaseCompact),
+/* harmony export */   "CircleOutAnimationEase": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_8__.CircleOutAnimationEase),
+/* harmony export */   "CircleOutAnimationEaseCompact": () => (/* reexport safe */ _easing_circle__WEBPACK_IMPORTED_MODULE_8__.CircleOutAnimationEaseCompact),
+/* harmony export */   "CreateAnimationActorCallback": () => (/* reexport safe */ _actors_callback__WEBPACK_IMPORTED_MODULE_21__.CreateAnimationActorCallback),
+/* harmony export */   "CreateAnimationEaseCallback": () => (/* reexport safe */ _easing_callback__WEBPACK_IMPORTED_MODULE_7__.CreateAnimationEaseCallback),
+/* harmony export */   "CreateBezierAnimationEaseCallback": () => (/* reexport safe */ _easing_bezier__WEBPACK_IMPORTED_MODULE_4__.CreateBezierAnimationEaseCallback),
+/* harmony export */   "CreateRotateAnimationActor": () => (/* reexport safe */ _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_26__.CreateRotateAnimationActor),
+/* harmony export */   "CreateRotateAnimationCallback": () => (/* reexport safe */ _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_26__.CreateRotateAnimationCallback),
+/* harmony export */   "CreateScaleAnimationActor": () => (/* reexport safe */ _actors_scale_generic__WEBPACK_IMPORTED_MODULE_29__.CreateScaleAnimationActor),
+/* harmony export */   "CreateScaleAnimationCallback": () => (/* reexport safe */ _actors_scale_generic__WEBPACK_IMPORTED_MODULE_29__.CreateScaleAnimationCallback),
+/* harmony export */   "CreateSceneAnimationActor": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_33__.CreateSceneAnimationActor),
+/* harmony export */   "CreateSceneAnimationCallback": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_33__.CreateSceneAnimationCallback),
+/* harmony export */   "CreateTranslateAnimationActor": () => (/* reexport safe */ _actors_translate_generic__WEBPACK_IMPORTED_MODULE_38__.CreateTranslateAnimationActor),
+/* harmony export */   "CreateTranslateAnimationCallback": () => (/* reexport safe */ _actors_translate_generic__WEBPACK_IMPORTED_MODULE_38__.CreateTranslateAnimationCallback),
+/* harmony export */   "CubicAnimationEase": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_9__.CubicAnimationEase),
+/* harmony export */   "CubicAnimationEaseCompact": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_9__.CubicAnimationEaseCompact),
+/* harmony export */   "CubicInAnimationEase": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_9__.CubicInAnimationEase),
+/* harmony export */   "CubicInAnimationEaseCompact": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_9__.CubicInAnimationEaseCompact),
+/* harmony export */   "CubicInOutAnimationEase": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_9__.CubicInOutAnimationEase),
+/* harmony export */   "CubicInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_9__.CubicInOutAnimationEaseCompact),
+/* harmony export */   "CubicOutAnimationEase": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_9__.CubicOutAnimationEase),
+/* harmony export */   "CubicOutAnimationEaseCompact": () => (/* reexport safe */ _easing_cubic__WEBPACK_IMPORTED_MODULE_9__.CubicOutAnimationEaseCompact),
+/* harmony export */   "DefaultAnimationActor": () => (/* reexport safe */ _actors_default__WEBPACK_IMPORTED_MODULE_22__.DefaultAnimationActor),
+/* harmony export */   "DefaultAnimationActorCompact": () => (/* reexport safe */ _actors_default__WEBPACK_IMPORTED_MODULE_22__.DefaultAnimationActorCompact),
+/* harmony export */   "DefaultAnimationEase": () => (/* reexport safe */ _easing_default__WEBPACK_IMPORTED_MODULE_10__.DefaultAnimationEase),
+/* harmony export */   "DefaultAnimationEaseCompact": () => (/* reexport safe */ _easing_default__WEBPACK_IMPORTED_MODULE_10__.DefaultAnimationEaseCompact),
+/* harmony export */   "DefaultRotateAnimationActorFactor": () => (/* reexport safe */ _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_26__.DefaultRotateAnimationActorFactor),
+/* harmony export */   "DefaultRotateAnimationActorUnit": () => (/* reexport safe */ _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_26__.DefaultRotateAnimationActorUnit),
+/* harmony export */   "DefaultTranslateAnimationActorFactor": () => (/* reexport safe */ _actors_translate_generic__WEBPACK_IMPORTED_MODULE_38__.DefaultTranslateAnimationActorFactor),
+/* harmony export */   "DefaultTranslateAnimationActorUnit": () => (/* reexport safe */ _actors_translate_generic__WEBPACK_IMPORTED_MODULE_38__.DefaultTranslateAnimationActorUnit),
+/* harmony export */   "ElasticAnimationEase": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_11__.ElasticAnimationEase),
+/* harmony export */   "ElasticAnimationEaseCompact": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_11__.ElasticAnimationEaseCompact),
+/* harmony export */   "ElasticInAnimationEase": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_11__.ElasticInAnimationEase),
+/* harmony export */   "ElasticInAnimationEaseCompact": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_11__.ElasticInAnimationEaseCompact),
+/* harmony export */   "ElasticInOutAnimationEase": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_11__.ElasticInOutAnimationEase),
+/* harmony export */   "ElasticInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_11__.ElasticInOutAnimationEaseCompact),
+/* harmony export */   "ElasticOutAnimationEase": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_11__.ElasticOutAnimationEase),
+/* harmony export */   "ElasticOutAnimationEaseCompact": () => (/* reexport safe */ _easing_elastic__WEBPACK_IMPORTED_MODULE_11__.ElasticOutAnimationEaseCompact),
+/* harmony export */   "ExponentialAnimationEase": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_12__.ExponentialAnimationEase),
+/* harmony export */   "ExponentialAnimationEaseCompact": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_12__.ExponentialAnimationEaseCompact),
+/* harmony export */   "ExponentialInAnimationEase": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_12__.ExponentialInAnimationEase),
+/* harmony export */   "ExponentialInAnimationEaseCompact": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_12__.ExponentialInAnimationEaseCompact),
+/* harmony export */   "ExponentialInOutAnimationEase": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_12__.ExponentialInOutAnimationEase),
+/* harmony export */   "ExponentialInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_12__.ExponentialInOutAnimationEaseCompact),
+/* harmony export */   "ExponentialOutAnimationEase": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_12__.ExponentialOutAnimationEase),
+/* harmony export */   "ExponentialOutAnimationEaseCompact": () => (/* reexport safe */ _easing_exponential__WEBPACK_IMPORTED_MODULE_12__.ExponentialOutAnimationEaseCompact),
+/* harmony export */   "FindTransitionData": () => (/* reexport safe */ _utilities_find_data__WEBPACK_IMPORTED_MODULE_1__.FindTransitionData),
+/* harmony export */   "FlipAnimationActor": () => (/* reexport safe */ _actors_rotate_flip__WEBPACK_IMPORTED_MODULE_25__.FlipAnimationActor),
+/* harmony export */   "FlipAnimationActorCompact": () => (/* reexport safe */ _actors_rotate_flip__WEBPACK_IMPORTED_MODULE_25__.FlipAnimationActorCompact),
+/* harmony export */   "FormatValue": () => (/* reexport safe */ _actors_scene_generic__WEBPACK_IMPORTED_MODULE_33__.FormatValue),
+/* harmony export */   "HeartbeatAnimationActor": () => (/* reexport safe */ _actors_scene_heartbeat__WEBPACK_IMPORTED_MODULE_34__.HeartbeatAnimationActor),
+/* harmony export */   "HeartbeatAnimationActorCompact": () => (/* reexport safe */ _actors_scene_heartbeat__WEBPACK_IMPORTED_MODULE_34__.HeartbeatAnimationActorCompact),
+/* harmony export */   "HeightAnimationActor": () => (/* reexport safe */ _actors_scale_height__WEBPACK_IMPORTED_MODULE_30__.HeightAnimationActor),
+/* harmony export */   "HeightAnimationActorCompact": () => (/* reexport safe */ _actors_scale_height__WEBPACK_IMPORTED_MODULE_30__.HeightAnimationActorCompact),
+/* harmony export */   "InvertAnimationEase": () => (/* reexport safe */ _easing_invert__WEBPACK_IMPORTED_MODULE_13__.InvertAnimationEase),
+/* harmony export */   "JelloAnimationCreator": () => (/* reexport safe */ _creators_jello__WEBPACK_IMPORTED_MODULE_44__.JelloAnimationCreator),
+/* harmony export */   "LinearAnimationEase": () => (/* reexport safe */ _easing_linear__WEBPACK_IMPORTED_MODULE_14__.LinearAnimationEase),
+/* harmony export */   "LinearAnimationEaseCompact": () => (/* reexport safe */ _easing_linear__WEBPACK_IMPORTED_MODULE_14__.LinearAnimationEaseCompact),
+/* harmony export */   "NullAnimationActor": () => (/* reexport safe */ _actors_null__WEBPACK_IMPORTED_MODULE_23__.NullAnimationActor),
+/* harmony export */   "NullAnimationActorCompact": () => (/* reexport safe */ _actors_null__WEBPACK_IMPORTED_MODULE_23__.NullAnimationActorCompact),
+/* harmony export */   "OpacityAnimationActor": () => (/* reexport safe */ _actors_opacity__WEBPACK_IMPORTED_MODULE_24__.OpacityAnimationActor),
+/* harmony export */   "OpacityAnimationActorCompact": () => (/* reexport safe */ _actors_opacity__WEBPACK_IMPORTED_MODULE_24__.OpacityAnimationActorCompact),
+/* harmony export */   "PulseAnimationActor": () => (/* reexport safe */ _actors_scene_pulse__WEBPACK_IMPORTED_MODULE_35__.PulseAnimationActor),
+/* harmony export */   "PulseAnimationActorCompact": () => (/* reexport safe */ _actors_scene_pulse__WEBPACK_IMPORTED_MODULE_35__.PulseAnimationActorCompact),
+/* harmony export */   "QuadraticAnimationEase": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__.QuadraticAnimationEase),
+/* harmony export */   "QuadraticAnimationEaseCompact": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__.QuadraticAnimationEaseCompact),
+/* harmony export */   "QuadraticInAnimationEase": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__.QuadraticInAnimationEase),
+/* harmony export */   "QuadraticInAnimationEaseCompact": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__.QuadraticInAnimationEaseCompact),
+/* harmony export */   "QuadraticInOutAnimationEase": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__.QuadraticInOutAnimationEase),
+/* harmony export */   "QuadraticInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__.QuadraticInOutAnimationEaseCompact),
+/* harmony export */   "QuadraticOutAnimationEase": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__.QuadraticOutAnimationEase),
+/* harmony export */   "QuadraticOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__.QuadraticOutAnimationEaseCompact),
+/* harmony export */   "QuartAnimationEase": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_16__.QuartAnimationEase),
+/* harmony export */   "QuartAnimationEaseCompact": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_16__.QuartAnimationEaseCompact),
+/* harmony export */   "QuartInAnimationEase": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_16__.QuartInAnimationEase),
+/* harmony export */   "QuartInAnimationEaseCompact": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_16__.QuartInAnimationEaseCompact),
+/* harmony export */   "QuartInOutAnimationEase": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_16__.QuartInOutAnimationEase),
+/* harmony export */   "QuartInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_16__.QuartInOutAnimationEaseCompact),
+/* harmony export */   "QuartOutAnimationEase": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_16__.QuartOutAnimationEase),
+/* harmony export */   "QuartOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quart__WEBPACK_IMPORTED_MODULE_16__.QuartOutAnimationEaseCompact),
+/* harmony export */   "QuintAnimationEase": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_17__.QuintAnimationEase),
+/* harmony export */   "QuintAnimationEaseCompact": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_17__.QuintAnimationEaseCompact),
+/* harmony export */   "QuintInAnimationEase": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_17__.QuintInAnimationEase),
+/* harmony export */   "QuintInAnimationEaseCompact": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_17__.QuintInAnimationEaseCompact),
+/* harmony export */   "QuintInOutAnimationEase": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_17__.QuintInOutAnimationEase),
+/* harmony export */   "QuintInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_17__.QuintInOutAnimationEaseCompact),
+/* harmony export */   "QuintOutAnimationEase": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_17__.QuintOutAnimationEase),
+/* harmony export */   "QuintOutAnimationEaseCompact": () => (/* reexport safe */ _easing_quint__WEBPACK_IMPORTED_MODULE_17__.QuintOutAnimationEaseCompact),
+/* harmony export */   "RotateAnimationCreator": () => (/* reexport safe */ _creators_rotate__WEBPACK_IMPORTED_MODULE_45__.RotateAnimationCreator),
+/* harmony export */   "RubberbandAnimationCreator": () => (/* reexport safe */ _creators_rubberband__WEBPACK_IMPORTED_MODULE_46__.RubberbandAnimationCreator),
+/* harmony export */   "ScaleAnimationCreator": () => (/* reexport safe */ _creators_scale__WEBPACK_IMPORTED_MODULE_47__.ScaleAnimationCreator),
+/* harmony export */   "SceneAnimationCreator": () => (/* reexport safe */ _creators_scene__WEBPACK_IMPORTED_MODULE_48__.SceneAnimationCreator),
+/* harmony export */   "ShakeAnimationActor": () => (/* reexport safe */ _actors_scene_shake__WEBPACK_IMPORTED_MODULE_36__.ShakeAnimationActor),
+/* harmony export */   "ShakeAnimationActorCompact": () => (/* reexport safe */ _actors_scene_shake__WEBPACK_IMPORTED_MODULE_36__.ShakeAnimationActorCompact),
+/* harmony export */   "ShakeAnimationCreator": () => (/* reexport safe */ _creators_shake__WEBPACK_IMPORTED_MODULE_49__.ShakeAnimationCreator),
+/* harmony export */   "SineAnimationEase": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_18__.SineAnimationEase),
+/* harmony export */   "SineAnimationEaseCompact": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_18__.SineAnimationEaseCompact),
+/* harmony export */   "SineInAnimationEase": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_18__.SineInAnimationEase),
+/* harmony export */   "SineInAnimationEaseCompact": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_18__.SineInAnimationEaseCompact),
+/* harmony export */   "SineInOutAnimationEase": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_18__.SineInOutAnimationEase),
+/* harmony export */   "SineInOutAnimationEaseCompact": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_18__.SineInOutAnimationEaseCompact),
+/* harmony export */   "SineOutAnimationEase": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_18__.SineOutAnimationEase),
+/* harmony export */   "SineOutAnimationEaseCompact": () => (/* reexport safe */ _easing_sine__WEBPACK_IMPORTED_MODULE_18__.SineOutAnimationEaseCompact),
+/* harmony export */   "SlideDownAnimationActor": () => (/* reexport safe */ _actors_translate_slide_down__WEBPACK_IMPORTED_MODULE_39__.SlideDownAnimationActor),
+/* harmony export */   "SlideDownAnimationActorCompact": () => (/* reexport safe */ _actors_translate_slide_down__WEBPACK_IMPORTED_MODULE_39__.SlideDownAnimationActorCompact),
+/* harmony export */   "SlideLeftAnimationActor": () => (/* reexport safe */ _actors_translate_slide_left__WEBPACK_IMPORTED_MODULE_40__.SlideLeftAnimationActor),
+/* harmony export */   "SlideLeftAnimationActorCompact": () => (/* reexport safe */ _actors_translate_slide_left__WEBPACK_IMPORTED_MODULE_40__.SlideLeftAnimationActorCompact),
+/* harmony export */   "SlideRightAnimationActor": () => (/* reexport safe */ _actors_translate_slide_right__WEBPACK_IMPORTED_MODULE_41__.SlideRightAnimationActor),
+/* harmony export */   "SlideRightAnimationActorCompact": () => (/* reexport safe */ _actors_translate_slide_right__WEBPACK_IMPORTED_MODULE_41__.SlideRightAnimationActorCompact),
+/* harmony export */   "SlideUpAnimationActor": () => (/* reexport safe */ _actors_translate_slide_up__WEBPACK_IMPORTED_MODULE_42__.SlideUpAnimationActor),
+/* harmony export */   "SlideUpAnimationActorCompact": () => (/* reexport safe */ _actors_translate_slide_up__WEBPACK_IMPORTED_MODULE_42__.SlideUpAnimationActorCompact),
+/* harmony export */   "SpinAnimationActor": () => (/* reexport safe */ _actors_rotate_spin__WEBPACK_IMPORTED_MODULE_27__.SpinAnimationActor),
+/* harmony export */   "SpinAnimationActorCompact": () => (/* reexport safe */ _actors_rotate_spin__WEBPACK_IMPORTED_MODULE_27__.SpinAnimationActorCompact),
+/* harmony export */   "SwingAnimationCreator": () => (/* reexport safe */ _creators_swing__WEBPACK_IMPORTED_MODULE_50__.SwingAnimationCreator),
+/* harmony export */   "TadaAnimationCreator": () => (/* reexport safe */ _creators_tada__WEBPACK_IMPORTED_MODULE_51__.TadaAnimationCreator),
+/* harmony export */   "TossAnimationActor": () => (/* reexport safe */ _actors_rotate_toss__WEBPACK_IMPORTED_MODULE_28__.TossAnimationActor),
+/* harmony export */   "TossAnimationActorCompact": () => (/* reexport safe */ _actors_rotate_toss__WEBPACK_IMPORTED_MODULE_28__.TossAnimationActorCompact),
+/* harmony export */   "TransitionDirectiveHandler": () => (/* reexport safe */ _directive_transition__WEBPACK_IMPORTED_MODULE_58__.TransitionDirectiveHandler),
+/* harmony export */   "TransitionDirectiveHandlerCompact": () => (/* reexport safe */ _directive_transition__WEBPACK_IMPORTED_MODULE_58__.TransitionDirectiveHandlerCompact),
+/* harmony export */   "TranslateAnimationCreator": () => (/* reexport safe */ _creators_translate__WEBPACK_IMPORTED_MODULE_52__.TranslateAnimationCreator),
+/* harmony export */   "VibrateAnimationActor": () => (/* reexport safe */ _actors_scene_vibrate__WEBPACK_IMPORTED_MODULE_37__.VibrateAnimationActor),
+/* harmony export */   "VibrateAnimationActorCompact": () => (/* reexport safe */ _actors_scene_vibrate__WEBPACK_IMPORTED_MODULE_37__.VibrateAnimationActorCompact),
+/* harmony export */   "VibrateAnimationCreator": () => (/* reexport safe */ _creators_vibrate__WEBPACK_IMPORTED_MODULE_53__.VibrateAnimationCreator),
+/* harmony export */   "WidthAnimationActor": () => (/* reexport safe */ _actors_scale_width__WEBPACK_IMPORTED_MODULE_31__.WidthAnimationActor),
+/* harmony export */   "WidthAnimationActorCompact": () => (/* reexport safe */ _actors_scale_width__WEBPACK_IMPORTED_MODULE_31__.WidthAnimationActorCompact),
+/* harmony export */   "ZoomAnimationActor": () => (/* reexport safe */ _actors_scale_zoom__WEBPACK_IMPORTED_MODULE_32__.ZoomAnimationActor),
+/* harmony export */   "ZoomAnimationActorCompact": () => (/* reexport safe */ _actors_scale_zoom__WEBPACK_IMPORTED_MODULE_32__.ZoomAnimationActorCompact)
 /* harmony export */ });
-/* harmony import */ var _easing_add__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./easing/add */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/add.js");
-/* harmony import */ var _easing_back__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./easing/back */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/back.js");
-/* harmony import */ var _easing_bezier__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./easing/bezier */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/bezier.js");
-/* harmony import */ var _easing_bounce__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./easing/bounce */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/bounce.js");
-/* harmony import */ var _easing_call__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./easing/call */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/call.js");
-/* harmony import */ var _easing_callback__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./easing/callback */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/callback.js");
-/* harmony import */ var _easing_circle__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./easing/circle */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/circle.js");
-/* harmony import */ var _easing_cubic__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./easing/cubic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/cubic.js");
-/* harmony import */ var _easing_default__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./easing/default */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/default.js");
-/* harmony import */ var _easing_elastic__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./easing/elastic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/elastic.js");
-/* harmony import */ var _easing_exponential__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./easing/exponential */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/exponential.js");
-/* harmony import */ var _easing_invert__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./easing/invert */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/invert.js");
-/* harmony import */ var _easing_linear__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./easing/linear */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/linear.js");
-/* harmony import */ var _easing_quadratic__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./easing/quadratic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/quadratic.js");
-/* harmony import */ var _easing_quart__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./easing/quart */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/quart.js");
-/* harmony import */ var _easing_quint__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./easing/quint */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/quint.js");
-/* harmony import */ var _easing_sine__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./easing/sine */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/sine.js");
-/* harmony import */ var _actors_add__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./actors/add */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/add.js");
-/* harmony import */ var _actors_call__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./actors/call */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/call.js");
-/* harmony import */ var _actors_callback__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./actors/callback */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/callback.js");
-/* harmony import */ var _actors_default__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./actors/default */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/default.js");
-/* harmony import */ var _actors_null__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./actors/null */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/null.js");
-/* harmony import */ var _actors_opacity__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./actors/opacity */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/opacity.js");
-/* harmony import */ var _actors_rotate_flip__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./actors/rotate/flip */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/rotate/flip.js");
-/* harmony import */ var _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./actors/rotate/generic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/rotate/generic.js");
-/* harmony import */ var _actors_rotate_spin__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./actors/rotate/spin */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/rotate/spin.js");
-/* harmony import */ var _actors_rotate_toss__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./actors/rotate/toss */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/rotate/toss.js");
-/* harmony import */ var _actors_scale_generic__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./actors/scale/generic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scale/generic.js");
-/* harmony import */ var _actors_scale_height__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./actors/scale/height */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scale/height.js");
-/* harmony import */ var _actors_scale_width__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./actors/scale/width */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scale/width.js");
-/* harmony import */ var _actors_scale_zoom__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./actors/scale/zoom */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scale/zoom.js");
-/* harmony import */ var _actors_scene_generic__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./actors/scene/generic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/generic.js");
-/* harmony import */ var _actors_scene_heartbeat__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./actors/scene/heartbeat */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/heartbeat.js");
-/* harmony import */ var _actors_scene_pulse__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./actors/scene/pulse */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/pulse.js");
-/* harmony import */ var _actors_scene_shake__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./actors/scene/shake */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/shake.js");
-/* harmony import */ var _actors_scene_vibrate__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./actors/scene/vibrate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/vibrate.js");
-/* harmony import */ var _actors_translate_generic__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./actors/translate/generic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/generic.js");
-/* harmony import */ var _actors_translate_slide_down__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./actors/translate/slide-down */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/slide-down.js");
-/* harmony import */ var _actors_translate_slide_left__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./actors/translate/slide-left */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/slide-left.js");
-/* harmony import */ var _actors_translate_slide_right__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./actors/translate/slide-right */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/slide-right.js");
-/* harmony import */ var _actors_translate_slide_up__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./actors/translate/slide-up */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/slide-up.js");
-/* harmony import */ var _creators_bezier__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./creators/bezier */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/bezier.js");
-/* harmony import */ var _creators_jello__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./creators/jello */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/jello.js");
-/* harmony import */ var _creators_rotate__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./creators/rotate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/rotate.js");
-/* harmony import */ var _creators_rubberband__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./creators/rubberband */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/rubberband.js");
-/* harmony import */ var _creators_scale__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./creators/scale */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/scale.js");
-/* harmony import */ var _creators_scene__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./creators/scene */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/scene.js");
-/* harmony import */ var _creators_shake__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./creators/shake */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/shake.js");
-/* harmony import */ var _creators_swing__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./creators/swing */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/swing.js");
-/* harmony import */ var _creators_tada__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./creators/tada */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/tada.js");
-/* harmony import */ var _creators_translate__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./creators/translate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/translate.js");
-/* harmony import */ var _creators_vibrate__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./creators/vibrate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/vibrate.js");
-/* harmony import */ var _collection_actor__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./collection/actor */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/collection/actor.js");
-/* harmony import */ var _collection_creator__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./collection/creator */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/collection/creator.js");
-/* harmony import */ var _collection_ease__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./collection/ease */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/collection/ease.js");
-/* harmony import */ var _directive_animate__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./directive/animate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/directive/animate.js");
-/* harmony import */ var _directive_transition__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./directive/transition */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/directive/transition.js");
-/* harmony import */ var _magic_animation__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./magic/animation */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/magic/animation.js");
-/* harmony import */ var _concept__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./concept */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/concept.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./types */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/types.js");
+/* harmony import */ var _utilities_find_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utilities/find-data */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/utilities/find-data.js");
+/* harmony import */ var _easing_add__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./easing/add */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/add.js");
+/* harmony import */ var _easing_back__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./easing/back */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/back.js");
+/* harmony import */ var _easing_bezier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./easing/bezier */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/bezier.js");
+/* harmony import */ var _easing_bounce__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./easing/bounce */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/bounce.js");
+/* harmony import */ var _easing_call__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./easing/call */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/call.js");
+/* harmony import */ var _easing_callback__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./easing/callback */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/callback.js");
+/* harmony import */ var _easing_circle__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./easing/circle */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/circle.js");
+/* harmony import */ var _easing_cubic__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./easing/cubic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/cubic.js");
+/* harmony import */ var _easing_default__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./easing/default */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/default.js");
+/* harmony import */ var _easing_elastic__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./easing/elastic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/elastic.js");
+/* harmony import */ var _easing_exponential__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./easing/exponential */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/exponential.js");
+/* harmony import */ var _easing_invert__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./easing/invert */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/invert.js");
+/* harmony import */ var _easing_linear__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./easing/linear */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/linear.js");
+/* harmony import */ var _easing_quadratic__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./easing/quadratic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/quadratic.js");
+/* harmony import */ var _easing_quart__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./easing/quart */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/quart.js");
+/* harmony import */ var _easing_quint__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./easing/quint */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/quint.js");
+/* harmony import */ var _easing_sine__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./easing/sine */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/easing/sine.js");
+/* harmony import */ var _actors_add__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./actors/add */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/add.js");
+/* harmony import */ var _actors_call__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./actors/call */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/call.js");
+/* harmony import */ var _actors_callback__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./actors/callback */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/callback.js");
+/* harmony import */ var _actors_default__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./actors/default */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/default.js");
+/* harmony import */ var _actors_null__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./actors/null */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/null.js");
+/* harmony import */ var _actors_opacity__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./actors/opacity */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/opacity.js");
+/* harmony import */ var _actors_rotate_flip__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./actors/rotate/flip */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/rotate/flip.js");
+/* harmony import */ var _actors_rotate_generic__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./actors/rotate/generic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/rotate/generic.js");
+/* harmony import */ var _actors_rotate_spin__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./actors/rotate/spin */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/rotate/spin.js");
+/* harmony import */ var _actors_rotate_toss__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./actors/rotate/toss */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/rotate/toss.js");
+/* harmony import */ var _actors_scale_generic__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./actors/scale/generic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scale/generic.js");
+/* harmony import */ var _actors_scale_height__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./actors/scale/height */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scale/height.js");
+/* harmony import */ var _actors_scale_width__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./actors/scale/width */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scale/width.js");
+/* harmony import */ var _actors_scale_zoom__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./actors/scale/zoom */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scale/zoom.js");
+/* harmony import */ var _actors_scene_generic__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./actors/scene/generic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/generic.js");
+/* harmony import */ var _actors_scene_heartbeat__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./actors/scene/heartbeat */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/heartbeat.js");
+/* harmony import */ var _actors_scene_pulse__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./actors/scene/pulse */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/pulse.js");
+/* harmony import */ var _actors_scene_shake__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./actors/scene/shake */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/shake.js");
+/* harmony import */ var _actors_scene_vibrate__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./actors/scene/vibrate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/scene/vibrate.js");
+/* harmony import */ var _actors_translate_generic__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./actors/translate/generic */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/generic.js");
+/* harmony import */ var _actors_translate_slide_down__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./actors/translate/slide-down */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/slide-down.js");
+/* harmony import */ var _actors_translate_slide_left__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./actors/translate/slide-left */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/slide-left.js");
+/* harmony import */ var _actors_translate_slide_right__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./actors/translate/slide-right */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/slide-right.js");
+/* harmony import */ var _actors_translate_slide_up__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./actors/translate/slide-up */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/translate/slide-up.js");
+/* harmony import */ var _creators_bezier__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./creators/bezier */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/bezier.js");
+/* harmony import */ var _creators_jello__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./creators/jello */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/jello.js");
+/* harmony import */ var _creators_rotate__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./creators/rotate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/rotate.js");
+/* harmony import */ var _creators_rubberband__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./creators/rubberband */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/rubberband.js");
+/* harmony import */ var _creators_scale__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./creators/scale */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/scale.js");
+/* harmony import */ var _creators_scene__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./creators/scene */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/scene.js");
+/* harmony import */ var _creators_shake__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./creators/shake */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/shake.js");
+/* harmony import */ var _creators_swing__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./creators/swing */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/swing.js");
+/* harmony import */ var _creators_tada__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./creators/tada */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/tada.js");
+/* harmony import */ var _creators_translate__WEBPACK_IMPORTED_MODULE_52__ = __webpack_require__(/*! ./creators/translate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/translate.js");
+/* harmony import */ var _creators_vibrate__WEBPACK_IMPORTED_MODULE_53__ = __webpack_require__(/*! ./creators/vibrate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/creators/vibrate.js");
+/* harmony import */ var _collection_actor__WEBPACK_IMPORTED_MODULE_54__ = __webpack_require__(/*! ./collection/actor */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/collection/actor.js");
+/* harmony import */ var _collection_creator__WEBPACK_IMPORTED_MODULE_55__ = __webpack_require__(/*! ./collection/creator */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/collection/creator.js");
+/* harmony import */ var _collection_ease__WEBPACK_IMPORTED_MODULE_56__ = __webpack_require__(/*! ./collection/ease */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/collection/ease.js");
+/* harmony import */ var _directive_animate__WEBPACK_IMPORTED_MODULE_57__ = __webpack_require__(/*! ./directive/animate */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/directive/animate.js");
+/* harmony import */ var _directive_transition__WEBPACK_IMPORTED_MODULE_58__ = __webpack_require__(/*! ./directive/transition */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/directive/transition.js");
+/* harmony import */ var _magic_animation__WEBPACK_IMPORTED_MODULE_59__ = __webpack_require__(/*! ./magic/animation */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/magic/animation.js");
+/* harmony import */ var _concept__WEBPACK_IMPORTED_MODULE_60__ = __webpack_require__(/*! ./concept */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/concept.js");
+
+
 
 
 
@@ -2383,7 +2533,7 @@ var __rest = (undefined && undefined.__rest) || function (s, e) {
 
 
 
-const NamedAnimationDurations = {
+let NamedAnimationDurations = {
     crawl: 2000,
     slower: 1000,
     slow: 750,
@@ -2392,20 +2542,20 @@ const NamedAnimationDurations = {
     faster: 200,
     swift: 100,
 };
-const NamedAnimationConstants = {
+let NamedAnimationConstants = {
     infinite: -1,
 };
 function CreateAnimationProxy() {
+    let storedConcept = null, getConcept = () => (storedConcept || (storedConcept = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().GetConcept('animation')));
     let callActor = (actor, params) => ((typeof actor === 'function') ? actor(params) : actor.Handle(params));
-    let storedConcept = null, methods = {
+    const methods = {
         collect: (...actors) => {
-            let concept = (storedConcept || (storedConcept = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().GetConcept('animation')));
-            let validActors = actors.map(actor => ((typeof actor === 'string') ? concept === null || concept === void 0 ? void 0 : concept.GetActorCollection().Find(actor) : actor)).filter(actor => !!actor);
+            let validActors = actors.map(actor => { var _a; return ((typeof actor === 'string') ? (_a = getConcept()) === null || _a === void 0 ? void 0 : _a.GetActorCollection().Find(actor) : actor); }).filter(actor => !!actor);
             return (params) => validActors.forEach(actor => callActor(actor, params));
         },
         invert: (ease) => {
-            let concept = (storedConcept || (storedConcept = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().GetConcept('animation')));
-            let validEase = ((typeof ease === 'string') ? concept === null || concept === void 0 ? void 0 : concept.GetEaseCollection().Find(ease) : ease);
+            var _a;
+            let validEase = ((typeof ease === 'string') ? (_a = getConcept()) === null || _a === void 0 ? void 0 : _a.GetEaseCollection().Find(ease) : ease);
             return (_a) => {
                 var { fraction } = _a, rest = __rest(_a, ["fraction"]);
                 return (validEase ? (1 - (0,_easing_call__WEBPACK_IMPORTED_MODULE_2__.CallAnimationEase)(validEase, Object.assign({ fraction }, rest))) : fraction);
@@ -2415,13 +2565,49 @@ function CreateAnimationProxy() {
         applySceneTransform: _actors_scene_generic__WEBPACK_IMPORTED_MODULE_1__.ApplyTransform,
         applySceneRangeAndTransform: _actors_scene_generic__WEBPACK_IMPORTED_MODULE_1__.ApplyRangeAndTransform,
         formatSceneValue: _actors_scene_generic__WEBPACK_IMPORTED_MODULE_1__.FormatValue,
+        setNameDuration: (name, value) => {
+            NamedAnimationDurations[name] = value;
+        },
+        removeNameDuration: (name) => {
+            delete NamedAnimationDurations[name];
+        },
+        setNameConstant: (name, value) => {
+            NamedAnimationConstants[name] = value;
+        },
+        removeNameConstant: (name) => {
+            delete NamedAnimationConstants[name];
+        },
+        getConcept,
+    };
+    const groups = {
+        creators: (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildGetterProxyOptions)({
+            getter: (prop) => { var _a; return (prop && ((_a = getConcept()) === null || _a === void 0 ? void 0 : _a.GetCreatorCollection().Find(prop))); },
+        })),
+        actors: (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildGetterProxyOptions)({
+            getter: (prop) => { var _a; return (prop && ((_a = getConcept()) === null || _a === void 0 ? void 0 : _a.GetActorCollection().Find(prop))); },
+        })),
+        eases: (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildGetterProxyOptions)({
+            getter: (prop) => { var _a; return (prop && ((_a = getConcept()) === null || _a === void 0 ? void 0 : _a.GetEaseCollection().Find(prop))); },
+        })),
+        durations: (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildGetterProxyOptions)({
+            getter: (prop) => (prop && NamedAnimationDurations.hasOwnProperty(prop) && NamedAnimationDurations[prop]),
+        })),
+        constants: (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildGetterProxyOptions)({
+            getter: (prop) => (prop && NamedAnimationConstants.hasOwnProperty(prop) && NamedAnimationConstants[prop]),
+        })),
     };
     return (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildGetterProxyOptions)({
         getter: (prop) => {
             if (!prop) {
                 return;
             }
-            let concept = (storedConcept || (storedConcept = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().GetConcept('animation')));
+            if (groups.hasOwnProperty(prop)) {
+                return groups[prop];
+            }
+            if (methods.hasOwnProperty(prop)) {
+                return methods[prop];
+            }
+            let concept = getConcept();
             if (!concept) {
                 return;
             }
@@ -2443,17 +2629,47 @@ function CreateAnimationProxy() {
             if (NamedAnimationConstants.hasOwnProperty(prop)) {
                 return NamedAnimationConstants[prop];
             }
-            if (methods.hasOwnProperty(prop)) {
-                return methods[prop];
-            }
         },
-        lookup: [...Object.keys(methods)],
+        lookup: [...Object.keys(groups), ...Object.keys(methods)],
     }));
 }
 const AnimationProxy = CreateAnimationProxy();
 const AnimationMagicHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateMagicHandlerCallback)('animation', () => AnimationProxy);
 function AnimationMagicHandlerCompact() {
     (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.AddMagicHandler)(AnimationMagicHandler);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@benbraide/inlinejs-animation/lib/esm/types.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@benbraide/inlinejs-animation/lib/esm/types.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+
+
+
+/***/ }),
+
+/***/ "./node_modules/@benbraide/inlinejs-animation/lib/esm/utilities/find-data.js":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/@benbraide/inlinejs-animation/lib/esm/utilities/find-data.js ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "FindTransitionData": () => (/* binding */ FindTransitionData)
+/* harmony export */ });
+/* harmony import */ var _benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @benbraide/inlinejs */ "./node_modules/@benbraide/inlinejs/lib/esm/index.js");
+
+function FindTransitionData({ componentId, component, contextElement }) {
+    var _a, _b;
+    let data = (_b = (_a = (component || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId))) === null || _a === void 0 ? void 0 : _a.FindElementScope(contextElement)) === null || _b === void 0 ? void 0 : _b.GetData('transition');
+    return ((!data || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().IsNothing(data)) ? null : data);
 }
 
 
@@ -3568,15 +3784,17 @@ class RouterConcept {
         return (Object.values(this.pages_).find(p => ((typeof p.path === 'string') ? (p.path === path) : p.path.test(path))) || null);
     }
     Mount(load) {
+        var _a;
         window.addEventListener('popstate', this.onEvent_);
         let path = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.PathToRelative)(window.location.href, this.origin_), split = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.SplitPath)(path);
         if (!load) {
             this.current_.path = path;
             this.current_.page = this.FindMatchingPage(split.base);
+            window.history.pushState(split, (((_a = this.current_.page) === null || _a === void 0 ? void 0 : _a.title) || 'Untitled'), path);
             this.pathChangeHandlers_.forEach(handler => (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JournalTry)(() => handler(path), 'InlineJS.RouterConcept.Mount'));
         }
         else {
-            this.Load_(split, false);
+            this.Load_(split, true);
         }
     }
     Goto(path, shouldReload, data) {
@@ -3639,6 +3857,11 @@ class RouterConcept {
         if (!protocolHandlerResponse) {
             page = this.FindMatchingPage(path.base);
             if (!page) { //Not found
+                this.current_.path = joined;
+                if (!samePath) {
+                    this.pathChangeHandlers_.forEach(handler => (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JournalTry)(() => handler(joined), 'InlineJS.RouterConcept.Load'));
+                    window.dispatchEvent(new CustomEvent(`${_names__WEBPACK_IMPORTED_MODULE_1__.RouterConceptName}.path`, { detail: { path: Object.assign({}, path) } }));
+                }
                 return window.dispatchEvent(new CustomEvent(`${_names__WEBPACK_IMPORTED_MODULE_1__.RouterConceptName}.404`, { detail: { path: (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JoinPath)(path) } }));
             }
             if (data) {
@@ -3782,9 +4005,8 @@ const FetchRouterDirectiveExtension = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_M
             let handler = ({ params }) => {
                 let data;
                 if (Object.keys(params).length != 0) { //Perform interpolation
-                    data = contextElement.innerHTML.replace(/\{\{\s*(.+?)\s*\}\}/g, (match, capture) => {
-                        let parts = capture.split('||').map(part => part.trim()).filter(part => !!part);
-                        return ((parts.length != 0 && params.hasOwnProperty(parts[0])) ? params[parts[0]] : ((parts.length > 1) ? parts[1] : match));
+                    data = contextElement.innerHTML.replace(/\{\:\s*(.+?)\s*\:\}/g, (match, capture) => {
+                        return (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.ToString)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression: capture })(undefined, [params], { params }));
                     });
                 }
                 else {
@@ -3938,15 +4160,19 @@ const MountRouterDirectiveExtension = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_M
     });
     let bind = (protocol) => {
         var _a, _b;
-        if (protocol && typeof protocol !== 'string' && !(protocol instanceof RegExp) && !(protocol instanceof HTMLElement)) {
+        if (protocol && typeof protocol !== 'string' && !(protocol instanceof RegExp) && !(protocol instanceof HTMLElement) && !(0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(protocol)) {
             return (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JournalError)('Target protocol is invalid.', `${_names__WEBPACK_IMPORTED_MODULE_1__.RouterConceptName}:${argKey}`, contextElement);
         }
-        let mountElement;
+        let mountElement = null;
         if (protocol instanceof HTMLElement) { //Mount target specified
             mountElement = protocol;
             protocol = null;
         }
-        else { //Create mount
+        else if ((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(protocol)) {
+            mountElement = (protocol.target || null);
+            protocol = (protocol.protocol || null);
+        }
+        if (!mountElement) { //Create mount
             mountElement = document.createElement(options.main ? 'main' : (options.section ? 'section' : 'div'));
         }
         if (!mountElement) {
@@ -3978,7 +4204,7 @@ const MountRouterDirectiveExtension = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_M
                 transitionScope: contextElement,
             });
         };
-        let checkpoint = 0;
+        let checkpoint = 0, prepend = (path) => ('/' + (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.TidyPath)(`${protocol}${options.plural ? 's' : ''}/${path.startsWith('/') ? path.substring(1) : path}`));
         let protocolHandler = ({ path }) => {
             contextElement.dispatchEvent(new CustomEvent(`${_names__WEBPACK_IMPORTED_MODULE_1__.RouterConceptName}.mount.entered`));
             if (path === savedPath && !options.reload) { //Skip
@@ -3986,11 +4212,7 @@ const MountRouterDirectiveExtension = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_M
                 return true;
             }
             let myCheckpoint = ++checkpoint, dataHandler = (data, splitPath) => ((myCheckpoint == checkpoint) && handleData({ data, path: splitPath, url: path }));
-            if (options.prepend) { //Prepend protocol string
-                path = `/${protocol}${options.plural ? 's' : ''}/${path.startsWith('/') ? path.substring(1) : path}`;
-                return { dataHandler, path, shouldReload: options.reload };
-            }
-            return dataHandler;
+            return (options.prepend ? { dataHandler, path: prepend(path), shouldReload: options.reload } : dataHandler);
         };
         if (protocol) {
             concept.AddProtocolHandler(protocol, protocolHandler);
@@ -5134,6 +5356,7 @@ class Changes {
     }
     AddNextTickHandler(handler) {
         this.nextTickHandlers_.push(handler);
+        this.Schedule();
     }
     Schedule() {
         if (this.isScheduled_) {
@@ -5618,7 +5841,7 @@ class ElementScope {
             return;
         }
         this.state_.isMarked = true;
-        if (!(this.element_ instanceof HTMLTemplateElement) && this.element_.tagName.toLowerCase() !== 'svg') {
+        if (!(this.element_ instanceof HTMLTemplateElement)) {
             let component = (0,_find__WEBPACK_IMPORTED_MODULE_6__.FindComponentById)(this.componentId_);
             if (component) {
                 this.DestroyChildren_(component, this.element_, (markOnly || false));
@@ -5659,7 +5882,7 @@ class ElementScope {
         return (this.managers_.directive = (this.managers_.directive || new _directive_manager__WEBPACK_IMPORTED_MODULE_0__.DirectiveManager()));
     }
     DestroyChildren_(component, target, markOnly) {
-        Array.from(target.children).forEach((child) => {
+        Array.from(target.children).filter(child => !child.contains(target)).forEach((child) => {
             let childScope = component.FindElementScope(child);
             if (childScope) { //Destroy element scope
                 childScope.Destroy(markOnly);
@@ -5941,8 +6164,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _directive_process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../directive/process */ "./node_modules/@benbraide/inlinejs/lib/esm/directive/process.js");
 /* harmony import */ var _directive_transition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../directive/transition */ "./node_modules/@benbraide/inlinejs/lib/esm/directive/transition.js");
-/* harmony import */ var _journal_try__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../journal/try */ "./node_modules/@benbraide/inlinejs/lib/esm/journal/try.js");
-/* harmony import */ var _find__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./find */ "./node_modules/@benbraide/inlinejs/lib/esm/component/find.js");
+/* harmony import */ var _global_get__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../global/get */ "./node_modules/@benbraide/inlinejs/lib/esm/global/get.js");
+/* harmony import */ var _journal_try__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../journal/try */ "./node_modules/@benbraide/inlinejs/lib/esm/journal/try.js");
+/* harmony import */ var _element_scope_id__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./element-scope-id */ "./node_modules/@benbraide/inlinejs/lib/esm/component/element-scope-id.js");
+/* harmony import */ var _find__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./find */ "./node_modules/@benbraide/inlinejs/lib/esm/component/find.js");
+
+
 
 
 
@@ -5957,8 +6184,8 @@ function InsertHtml({ element, html, type = 'replace', component, processDirecti
         else if (type === 'prepend') { //Insert before child nodes
             element.prepend(...Array.from(tmpl.content.childNodes));
         }
-        (afterInsert && (0,_journal_try__WEBPACK_IMPORTED_MODULE_2__.JournalTry)(afterInsert, 'InlineJS.InsertHtml', element));
-        let resolvedComponent = (0,_find__WEBPACK_IMPORTED_MODULE_3__.FindComponentById)(componentId);
+        (afterInsert && (0,_journal_try__WEBPACK_IMPORTED_MODULE_3__.JournalTry)(afterInsert, 'InlineJS.InsertHtml', element));
+        let resolvedComponent = (0,_find__WEBPACK_IMPORTED_MODULE_5__.FindComponentById)(componentId);
         if (processDirectives && resolvedComponent) {
             Array.from(element.children).forEach(child => (0,_directive_process__WEBPACK_IMPORTED_MODULE_0__.ProcessDirectives)({
                 component: resolvedComponent,
@@ -5981,10 +6208,11 @@ function InsertHtml({ element, html, type = 'replace', component, processDirecti
     };
     if (type === 'replace') { //Remove all child nodes
         let destroyOffspring = (el) => {
-            let resolvedComponent = (0,_find__WEBPACK_IMPORTED_MODULE_3__.FindComponentById)(componentId);
+            let resolvedComponent = (0,_find__WEBPACK_IMPORTED_MODULE_5__.FindComponentById)(componentId), global = (0,_global_get__WEBPACK_IMPORTED_MODULE_2__.GetGlobal)();
             Array.from(el.children).forEach((child) => {
+                var _a;
                 let elementScope = resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.FindElementScope(child);
-                if (elementScope) {
+                if (elementScope || (_element_scope_id__WEBPACK_IMPORTED_MODULE_4__.ElementScopeKey in child && (elementScope = (_a = global.InferComponentFrom(child)) === null || _a === void 0 ? void 0 : _a.FindElementScope(child)))) {
                     elementScope.Destroy();
                 }
                 else {
@@ -6728,7 +6956,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function CheckElement(element, { checkTemplate = true, checkDocument = true }) {
-    return ((element === null || element === void 0 ? void 0 : element.nodeType) === 1 && (!checkDocument || document.contains(element)) && (!checkTemplate || element instanceof HTMLTemplateElement || !element.closest('template')));
+    return ((element === null || element === void 0 ? void 0 : element.nodeType) === 1 &&
+        (!checkDocument || document.contains(element)) &&
+        (!checkTemplate || element instanceof HTMLTemplateElement || !element.closest('template')));
 }
 function ProcessDirectives({ component, element, options = {} }) {
     var _a;
@@ -6761,12 +6991,12 @@ function ProcessDirectives({ component, element, options = {} }) {
     });
     if (!options.ignoreChildren && !(element instanceof HTMLTemplateElement)) { //Process children
         resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.PushSelectionScope();
-        Array.from(element.children).forEach(child => ProcessDirectives({ component, options,
+        Array.from(element.children).filter(child => !child.contains(element)).forEach(child => ProcessDirectives({ component, options,
             element: child,
         }));
         resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.PopSelectionScope();
     }
-    (_a = resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.CreateElementScope(element)) === null || _a === void 0 ? void 0 : _a.ExecutePostProcessCallbacks();
+    (_a = resolvedComponent === null || resolvedComponent === void 0 ? void 0 : resolvedComponent.FindElementScope(element)) === null || _a === void 0 ? void 0 : _a.ExecutePostProcessCallbacks();
 }
 
 
@@ -6996,7 +7226,7 @@ function GenerateFunctionFromString({ componentId, contextElement, expression, d
             return null;
         };
     }
-    let runFunction = (handler, target, params, contexts, forwardSyntaxErrors = true) => {
+    let runFunction = (handler, target, params, contexts, forwardSyntaxErrors = true, waitMessage) => {
         var _a;
         let component = (0,_component_find__WEBPACK_IMPORTED_MODULE_1__.FindComponentById)(componentId), proxy = component === null || component === void 0 ? void 0 : component.GetRootProxy().GetNative();
         if (!proxy || ((_a = component === null || component === void 0 ? void 0 : component.FindElementScope(contextElement)) === null || _a === void 0 ? void 0 : _a.IsDestroyed())) {
@@ -7016,8 +7246,9 @@ function GenerateFunctionFromString({ componentId, contextElement, expression, d
                 return (disableFunctionCall ? result : CallIfFunction(result, handler, componentId, params));
             }
             let handleResult = (value) => {
-                if (waitPromise !== 'none') {
+                if (value && waitPromise !== 'none') {
                     (0,_wait_promise__WEBPACK_IMPORTED_MODULE_5__.WaitPromise)(value, handler, waitPromise === 'recursive');
+                    return (waitMessage || 'Loading data...');
                 }
                 else { //Immediate
                     handler(value);
@@ -7048,10 +7279,10 @@ function GenerateFunctionFromString({ componentId, contextElement, expression, d
     if (!valueReturnFunction) {
         voidFunction = GenerateVoidFunction(expression, contextElement, componentId);
     }
-    return (handler, params = [], contexts) => {
+    return (handler, params = [], contexts, waitMessage) => {
         if (!voidFunction && valueReturnFunction) {
             try {
-                return runFunction(handler, valueReturnFunction, (params || []), (contexts || {}));
+                return runFunction(handler, valueReturnFunction, (params || []), (contexts || {}), undefined, waitMessage);
             }
             catch (err) {
                 if (err instanceof SyntaxError) {
@@ -7487,6 +7718,7 @@ const InlineJSGlobalKey = '__InlineJS_GLOBAL_KEY__';
 function CreateGlobal(configOptions, idOffset = 0) {
     (0,_component_find__WEBPACK_IMPORTED_MODULE_0__.InitComponentCache)();
     globalThis[InlineJSGlobalKey] = new _base__WEBPACK_IMPORTED_MODULE_1__.BaseGlobal(configOptions, idOffset);
+    (globalThis['InlineJS'] = (globalThis['InlineJS'] || {}))['global'] = globalThis[InlineJSGlobalKey];
     window.dispatchEvent(new CustomEvent(_get__WEBPACK_IMPORTED_MODULE_2__.GlobalCreatedEvent));
     return globalThis[InlineJSGlobalKey];
 }
@@ -8421,21 +8653,32 @@ class MutationObserver {
                         });
                     };
                     entries.forEach((entry) => {
-                        var _a;
-                        let key = ((entry.target instanceof HTMLElement) ? (0,_component_element_scope_id__WEBPACK_IMPORTED_MODULE_0__.GetElementScopeId)(((_a = (0,_component_infer__WEBPACK_IMPORTED_MODULE_1__.InferComponent)(entry.target)) === null || _a === void 0 ? void 0 : _a.GetRoot()) || null) : '');
-                        if (!key) { //Invalid target
-                            return;
-                        }
+                        var _a, _b;
                         if ((entry === null || entry === void 0 ? void 0 : entry.type) === 'childList') {
-                            let info = getInfo(key);
-                            info.added.push(...Array.from(entry.addedNodes));
-                            info.removed.push(...Array.from(entry.removedNodes));
+                            let pushRemovedNode = (node) => {
+                                var _a;
+                                let key = (0,_component_element_scope_id__WEBPACK_IMPORTED_MODULE_0__.GetElementScopeId)(((_a = (0,_component_infer__WEBPACK_IMPORTED_MODULE_1__.InferComponent)(node)) === null || _a === void 0 ? void 0 : _a.GetRoot()) || null);
+                                if (key) {
+                                    getInfo(key).removed.push(node);
+                                }
+                                else { //Try children
+                                    Array.from(node.childNodes).filter(child => !child.contains(node)).forEach(pushRemovedNode);
+                                }
+                            };
+                            entry.removedNodes.forEach(pushRemovedNode);
+                            let key = ((entry.target instanceof HTMLElement) ? (0,_component_element_scope_id__WEBPACK_IMPORTED_MODULE_0__.GetElementScopeId)(((_a = (0,_component_infer__WEBPACK_IMPORTED_MODULE_1__.InferComponent)(entry.target)) === null || _a === void 0 ? void 0 : _a.GetRoot()) || null) : '');
+                            if (key) {
+                                getInfo(key).added.push(...Array.from(entry.addedNodes));
+                            }
                         }
                         else if ((entry === null || entry === void 0 ? void 0 : entry.type) === 'attributes' && entry.attributeName) {
-                            getInfo(key).attributes.push({
-                                name: entry.attributeName,
-                                target: entry.target,
-                            });
+                            let key = ((entry.target instanceof HTMLElement) ? (0,_component_element_scope_id__WEBPACK_IMPORTED_MODULE_0__.GetElementScopeId)(((_b = (0,_component_infer__WEBPACK_IMPORTED_MODULE_1__.InferComponent)(entry.target)) === null || _b === void 0 ? void 0 : _b.GetRoot()) || null) : '');
+                            if (key) {
+                                getInfo(key).attributes.push({
+                                    name: entry.attributeName,
+                                    target: entry.target,
+                                });
+                            }
                         }
                     });
                     if (Object.keys(mutations).length == 0) {
@@ -8632,13 +8875,13 @@ function CreateInplaceProxy({ target, getter, setter, deleter, lookup, alert }) 
             if (typeof prop === 'symbol' || (typeof prop === 'string' && prop === 'prototype')) {
                 return Reflect.set(target, prop, value);
             }
-            return (setter ? setter(prop.toString(), value, target) : (!!target[prop] || true));
+            return (setter ? (setter(prop.toString(), value, target) !== false) : (!!target[prop] || true));
         },
         deleteProperty(target, prop) {
             if (typeof prop === 'symbol' || (typeof prop === 'string' && prop === 'prototype')) {
                 return Reflect.deleteProperty(target, prop);
             }
-            return (deleter ? deleter(prop.toString(), target) : (!!(delete target[prop]) || true));
+            return (deleter ? (deleter(prop.toString(), target) !== false) : (!!(delete target[prop]) || true));
         },
         has(target, prop) {
             if (Reflect.has(target, prop)) {
@@ -10052,6 +10295,7 @@ const inlinejs_1 = __webpack_require__(/*! @benbraide/inlinejs */ "./node_module
 const inlinejs_animation_1 = __webpack_require__(/*! @benbraide/inlinejs-animation */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/index.js");
 const inlinejs_collections_1 = __webpack_require__(/*! @benbraide/inlinejs-collections */ "./node_modules/@benbraide/inlinejs-collections/lib/esm/index.js");
 const inlinejs_moment_1 = __webpack_require__(/*! @benbraide/inlinejs-moment */ "./node_modules/@benbraide/inlinejs-moment/lib/esm/index.js");
+const inlinejs_alert_1 = __webpack_require__(/*! @benbraide/inlinejs-alert */ "./node_modules/@benbraide/inlinejs-alert/lib/esm/index.js");
 const inlinejs_router_1 = __webpack_require__(/*! @benbraide/inlinejs-router */ "./node_modules/@benbraide/inlinejs-router/lib/esm/index.js");
 const inlinejs_screen_1 = __webpack_require__(/*! @benbraide/inlinejs-screen */ "./node_modules/@benbraide/inlinejs-screen/lib/esm/index.js");
 (0, inlinejs_1.WaitForGlobal)().then(() => {
@@ -10161,6 +10405,9 @@ const inlinejs_screen_1 = __webpack_require__(/*! @benbraide/inlinejs-screen */ 
     (0, inlinejs_1.GetGlobal)().SetConcept(inlinejs_screen_1.ScreenConceptName, new inlinejs_screen_1.ScreenConcept((0, inlinejs_1.GetGlobal)().CreateComponent(document.createElement('template'))));
     (0, inlinejs_screen_1.ScreenMagicHandlerCompact)();
     //End: inlinejs-screen
+    //Begin: inlinejs-alert
+    (0, inlinejs_alert_1.AlertMagicHandlerCompact)();
+    //End: inlinejs-alert
 });
 
 })();
