@@ -603,9 +603,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-56 {
   height: 14rem;
 }
-.h-96 {
-  height: 24rem;
-}
 .h-64 {
   height: 16rem;
 }
@@ -707,6 +704,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .justify-between {
   justify-content: space-between;
+}
+.gap-y-2 {
+  row-gap: 0.5rem;
 }
 .gap-y-4 {
   row-gap: 1rem;
@@ -825,6 +825,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 .px-1 {
   padding-left: 0.25rem;

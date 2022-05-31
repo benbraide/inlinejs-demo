@@ -2351,6 +2351,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "RemoveFormMiddleware": () => (/* binding */ RemoveFormMiddleware)
 /* harmony export */ });
 /* harmony import */ var _benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @benbraide/inlinejs */ "./node_modules/@benbraide/inlinejs/lib/esm/index.js");
+/* harmony import */ var _names__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../names */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/names.js");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -2361,15 +2362,15 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
     });
 };
 
-const FormDirectiveName = 'form';
+
 let FormMiddlewares = {};
 const FormMethodVerbs = ['put', 'patch', 'delete'];
 const FormTokenName = '_FormPostToken_';
-const FormDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateDirectiveHandlerCallback)(FormDirectiveName, ({ componentId, component, contextElement, expression, argKey, argOptions }) => {
+const FormDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateDirectiveHandlerCallback)(_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName, ({ componentId, component, contextElement, expression, argKey, argOptions }) => {
     var _a;
     if ((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BindEvent)({ contextElement, expression,
         component: (component || componentId),
-        key: FormDirectiveName,
+        key: _names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName,
         event: argKey,
         defaultEvent: 'success',
         eventWhitelist: ['error', 'submitting', 'submit', 'save', 'load', 'reset'],
@@ -2382,7 +2383,7 @@ const FormDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
     if (!resolvedComponent) {
         return (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JournalError)('Failed to resolve component.', 'InlineJS.FormDirectiveHandler', contextElement);
     }
-    let localKey = `\$${FormDirectiveName}`;
+    let localKey = `\$${_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName}`;
     if (argKey === 'field') {
         return (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.EvaluateLater)({ componentId, contextElement, expression })((value) => {
             var _a;
@@ -2515,12 +2516,12 @@ const FormDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
     let afterHandledEvent = (ok, data) => {
         var _a;
         if (ok) {
-            contextElement.dispatchEvent(new CustomEvent(`${FormDirectiveName}.success`, {
+            contextElement.dispatchEvent(new CustomEvent(`${_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName}.success`, {
                 detail: { data },
             }));
         }
         else {
-            contextElement.dispatchEvent(new CustomEvent(`${FormDirectiveName}.error`, {
+            contextElement.dispatchEvent(new CustomEvent(`${_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName}.error`, {
                 detail: { data },
             }));
         }
@@ -2537,7 +2538,7 @@ const FormDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
         if (state.active || (eventHandler && !eventHandler(e))) {
             return;
         }
-        let event = new CustomEvent(`${FormDirectiveName}.submitting`);
+        let event = new CustomEvent(`${_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName}.submitting`);
         contextElement.dispatchEvent(event);
         if (event.defaultPrevented) {
             return;
@@ -2559,10 +2560,24 @@ const FormDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
         else { //Get | Head
             appendFields(url, Object.entries(fields));
         }
-        (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().GetFetchConcept().Get(url, info).then(res => res.json()).then((response) => {
+        (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().GetFetchConcept().Get(url, info).then((res) => {
+            try {
+                return res.json();
+            }
+            catch (_a) { }
+            return res.text();
+        }).then((response) => {
+            if (typeof response === 'string') {
+                try {
+                    response = JSON.parse(response);
+                }
+                catch (_a) {
+                    response = null;
+                }
+            }
             updateState('active', false);
             updateState('errors', {});
-            contextElement.dispatchEvent(new CustomEvent(`${FormDirectiveName}.submit`, {
+            contextElement.dispatchEvent(new CustomEvent(`${_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName}.submit`, {
                 detail: { response: response },
             }));
             if (!response || !(0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(response)) {
@@ -2573,12 +2588,13 @@ const FormDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
                 if (response.hasOwnProperty('failed')) {
                     let failed = response['failed'];
                     Object.entries((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(failed) ? failed : {}).forEach(([key, value]) => {
+                        var _a;
                         state.errors[key] = value;
                         if (form && !options.novalidate) { //Set validation error
                             let item = form.elements.namedItem(key);
-                            if (item && (item instanceof HTMLInputElement || item instanceof HTMLTextAreaElement || item instanceof HTMLSelectElement)) {
-                                item.setCustomValidity(Array.isArray(value) ? value.map(v => (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.ToString)(v)).join('\n') : (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.ToString)(value));
-                                item.dispatchEvent(new CustomEvent(`${FormDirectiveName}.validity`));
+                            let local = (item && ((_a = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)) === null || _a === void 0 ? void 0 : _a.FindElementLocalValue(item, `\$${_names__WEBPACK_IMPORTED_MODULE_1__.StateDirectiveName}`, true)));
+                            if (local && !(0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().IsNothing(local)) {
+                                local['setMessage'](Array.isArray(value) ? value.map(v => (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.ToString)(v)).join('\n') : (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.ToString)(value));
                             }
                         }
                     });
@@ -2622,15 +2638,15 @@ const FormDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
                 }
                 else if (options.reset && form) {
                     form.reset();
-                    (_b = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)) === null || _b === void 0 ? void 0 : _b.GetBackend().changes.AddNextTickHandler(() => form === null || form === void 0 ? void 0 : form.dispatchEvent(new CustomEvent(`${FormDirectiveName}.reset`)));
+                    (_b = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)) === null || _b === void 0 ? void 0 : _b.GetBackend().changes.AddNextTickHandler(() => form === null || form === void 0 ? void 0 : form.dispatchEvent(new CustomEvent(`${_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName}.reset`)));
                 }
                 if (after) {
                     after();
                 }
-            }, `InlineJS.${FormDirectiveName}.HandleEvent`, contextElement);
+            }, `InlineJS.${_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName}.HandleEvent`, contextElement);
         }).catch((err) => {
             updateState('active', false);
-            (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JournalError)(err, `InlineJS.${FormDirectiveName}.HandleEvent`, contextElement);
+            (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JournalError)(err, `InlineJS.${_names__WEBPACK_IMPORTED_MODULE_1__.FormDirectiveName}.HandleEvent`, contextElement);
         });
     };
     (_a = resolvedComponent.FindElementScope(contextElement)) === null || _a === void 0 ? void 0 : _a.SetLocal(localKey, (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildGetterProxyOptions)({
@@ -3096,10 +3112,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "StateDirectiveHandlerCompact": () => (/* binding */ StateDirectiveHandlerCompact)
 /* harmony export */ });
 /* harmony import */ var _benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @benbraide/inlinejs */ "./node_modules/@benbraide/inlinejs/lib/esm/index.js");
+/* harmony import */ var _names__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../names */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/names.js");
 
-const StateDirectiveName = 'state';
+
 function BindState(componentId, component, contextElement) {
-    let elementScope = component === null || component === void 0 ? void 0 : component.FindElementScope(contextElement), localKey = `\$${StateDirectiveName}`, parentKey = `#${StateDirectiveName}`;
+    if (contextElement instanceof HTMLTemplateElement) {
+        return;
+    }
+    let elementScope = component === null || component === void 0 ? void 0 : component.FindElementScope(contextElement), localKey = `\$${_names__WEBPACK_IMPORTED_MODULE_1__.StateDirectiveName}`, parentKey = `#${_names__WEBPACK_IMPORTED_MODULE_1__.StateDirectiveName}`;
     if (elementScope === null || elementScope === void 0 ? void 0 : elementScope.HasLocal(localKey)) {
         return;
     }
@@ -3141,16 +3161,23 @@ function BindState(componentId, component, contextElement) {
         let local = (_b = (_a = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)) === null || _a === void 0 ? void 0 : _a.FindElementScope(target)) === null || _b === void 0 ? void 0 : _b.GetLocal(localKey);
         return ((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.GetGlobal)().IsNothing(local) ? null : local);
     };
-    let getArray = (value) => ((typeof value === 'string') ? [value] : value), getRoot = () => {
+    let getRoot = () => {
         return (parent ? parent.getRoot() : getLocal(contextElement));
     };
     let getMessage = () => {
         var _a;
-        if (message !== null) {
-            (_a = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)) === null || _a === void 0 ? void 0 : _a.GetBackend().changes.AddGetAccess(`${id}.message`);
-            return message;
+        if (!isFormElement || message === null) {
+            return errorCallbacks
+                .map(callback => callback())
+                .map(info => (Array.isArray(info) ? info : [info]))
+                .reduce((prev, info) => [...prev, ...info], [])
+                .filter(info => (info.message.length != 0));
         }
-        return errorCallbacks.reduce((prev, callback) => [...prev, ...getArray(callback())], new Array()).filter(msg => !!msg);
+        (_a = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)) === null || _a === void 0 ? void 0 : _a.GetBackend().changes.AddGetAccess(`${id}.message`);
+        return {
+            name: contextElement.getAttribute('name') || 'Unnamed',
+            message: (message ? message.split('\n') : []),
+        };
     };
     let isInput = (contextElement instanceof HTMLInputElement || contextElement instanceof HTMLTextAreaElement), local = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateInplaceProxy)((0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.BuildGetterProxyOptions)({
         getter: (prop) => {
@@ -3160,6 +3187,10 @@ function BindState(componentId, component, contextElement) {
                 return (state[prop] > 0);
             }
             if (prop === 'message') {
+                let msg = getMessage();
+                return (isFormElement ? (Array.isArray(msg) ? msg : [msg]).map(item => item.message).reduce((prev, item) => [...prev, ...item], []) : msg);
+            }
+            if (prop === 'realMessage') {
                 return getMessage();
             }
             if (prop === 'parent') {
@@ -3171,14 +3202,26 @@ function BindState(componentId, component, contextElement) {
             if (prop === 'reset') {
                 return reset;
             }
+            if (isFormElement && prop === 'setMessage') {
+                return (msg) => {
+                    contextElement.setCustomValidity(message = msg);
+                    if (!contextElement.validity.valid) {
+                        offsetState('invalid', 1, 1);
+                    }
+                };
+            }
         },
         lookup: [...Object.keys(state), 'message', 'parent', 'root', 'reset'],
     }));
-    if (isInput || contextElement instanceof HTMLSelectElement) {
+    let isFormElement = (isInput || contextElement instanceof HTMLSelectElement);
+    if (isFormElement) {
         let initialValue = contextElement.value, onEvent = () => {
             offsetState('dirty', 1, 1);
             offsetState('changed', (contextElement.value === initialValue) ? -1 : 1, 1);
             offsetState('invalid', (contextElement.validity.valid ? -1 : 1), 1);
+            if (contextElement.validity.customError) {
+                contextElement.setCustomValidity('');
+            }
             updateMessage(contextElement.validationMessage);
         };
         contextElement.addEventListener('change', onEvent);
@@ -3197,18 +3240,36 @@ function BindState(componentId, component, contextElement) {
             addResetCallback: (callback) => resetCallbacks.push(callback),
             removeResetCallback: (callback) => (resetCallbacks = resetCallbacks.filter(c => (c !== callback))),
         });
-        elementScope === null || elementScope === void 0 ? void 0 : elementScope.AddTreeChangeCallback(({ added }) => added.forEach(child => BindState(componentId, null, child)));
-        [...contextElement.children].forEach((child) => {
+        elementScope === null || elementScope === void 0 ? void 0 : elementScope.AddTreeChangeCallback(({ added }) => added.filter(child => !(child instanceof HTMLTemplateElement)).forEach((child) => {
+            var _a;
+            (_a = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)) === null || _a === void 0 ? void 0 : _a.CreateElementScope(child);
+            BindState(componentId, (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId), child);
+        }));
+        [...contextElement.children].filter(child => !(child instanceof HTMLTemplateElement)).forEach((child) => {
             component === null || component === void 0 ? void 0 : component.CreateElementScope(child);
             BindState(componentId, component, child);
         });
     }
-    let reset = () => {
+    let checkpoint = 0, reset = () => {
         Object.keys(state).filter(key => (state[key] != 0)).forEach((key) => {
             state[key] = 0;
             alertUpdate(key, -1);
         });
-        resetCallbacks.forEach(callback => callback());
+        if (isFormElement) {
+            let myCheckpoint = ++checkpoint;
+            setTimeout(() => {
+                if (myCheckpoint != checkpoint) {
+                    return;
+                }
+                updateMessage(contextElement.validationMessage);
+                if (!contextElement.validity.valid) {
+                    offsetState('invalid', 1, 1);
+                }
+            }, 0);
+        }
+        else {
+            resetCallbacks.forEach(callback => callback());
+        }
     };
     if (!isInput && !(contextElement instanceof HTMLSelectElement) && errorCallbacks.length == 0) {
         elementScope === null || elementScope === void 0 ? void 0 : elementScope.DeleteLocal(parentKey);
@@ -3223,7 +3284,7 @@ function BindState(componentId, component, contextElement) {
         });
     }
     else { //Listen for form reset, if possible
-        let form = component === null || component === void 0 ? void 0 : component.FindElement(contextElement, el => (el instanceof HTMLFormElement));
+        let form = ((contextElement instanceof HTMLFormElement) ? contextElement : component === null || component === void 0 ? void 0 : component.FindElement(contextElement, el => (el instanceof HTMLFormElement)));
         if (form) {
             form.addEventListener('reset', reset);
             elementScope === null || elementScope === void 0 ? void 0 : elementScope.AddUninitCallback(() => form.removeEventListener('reset', reset));
@@ -3231,7 +3292,7 @@ function BindState(componentId, component, contextElement) {
     }
     elementScope === null || elementScope === void 0 ? void 0 : elementScope.SetLocal(localKey, local);
 }
-const StateDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateDirectiveHandlerCallback)(StateDirectiveName, ({ componentId, component, contextElement }) => {
+const StateDirectiveHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.CreateDirectiveHandlerCallback)(_names__WEBPACK_IMPORTED_MODULE_1__.StateDirectiveName, ({ componentId, component, contextElement }) => {
     BindState(componentId, (component || (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.FindComponentById)(componentId)), contextElement);
 });
 function StateDirectiveHandlerCompact() {
@@ -3392,52 +3453,56 @@ function TickDirectiveHandlerCompact() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AddFormMiddleware": () => (/* reexport safe */ _directive_form__WEBPACK_IMPORTED_MODULE_3__.AddFormMiddleware),
-/* harmony export */   "AttrDirectiveHandler": () => (/* reexport safe */ _directive_attr__WEBPACK_IMPORTED_MODULE_2__.AttrDirectiveHandler),
-/* harmony export */   "AttrDirectiveHandlerCompact": () => (/* reexport safe */ _directive_attr__WEBPACK_IMPORTED_MODULE_2__.AttrDirectiveHandlerCompact),
-/* harmony export */   "FetchConcept": () => (/* reexport safe */ _concepts_fetch__WEBPACK_IMPORTED_MODULE_0__.FetchConcept),
-/* harmony export */   "FetchMagicHandler": () => (/* reexport safe */ _magic_fetch__WEBPACK_IMPORTED_MODULE_10__.FetchMagicHandler),
-/* harmony export */   "FetchMagicHandlerCompact": () => (/* reexport safe */ _magic_fetch__WEBPACK_IMPORTED_MODULE_10__.FetchMagicHandlerCompact),
-/* harmony export */   "FormDirectiveHandler": () => (/* reexport safe */ _directive_form__WEBPACK_IMPORTED_MODULE_3__.FormDirectiveHandler),
-/* harmony export */   "FormDirectiveHandlerCompact": () => (/* reexport safe */ _directive_form__WEBPACK_IMPORTED_MODULE_3__.FormDirectiveHandlerCompact),
-/* harmony export */   "FormatMagicHandler": () => (/* reexport safe */ _magic_format__WEBPACK_IMPORTED_MODULE_11__.FormatMagicHandler),
-/* harmony export */   "FormatMagicHandlerCompact": () => (/* reexport safe */ _magic_format__WEBPACK_IMPORTED_MODULE_11__.FormatMagicHandlerCompact),
-/* harmony export */   "GetMagicHandler": () => (/* reexport safe */ _magic_get__WEBPACK_IMPORTED_MODULE_12__.GetMagicHandler),
-/* harmony export */   "GetMagicHandlerCompact": () => (/* reexport safe */ _magic_get__WEBPACK_IMPORTED_MODULE_12__.GetMagicHandlerCompact),
-/* harmony export */   "IntersectionDirectiveHandler": () => (/* reexport safe */ _directive_intersection__WEBPACK_IMPORTED_MODULE_4__.IntersectionDirectiveHandler),
-/* harmony export */   "IntersectionDirectiveHandlerCompact": () => (/* reexport safe */ _directive_intersection__WEBPACK_IMPORTED_MODULE_4__.IntersectionDirectiveHandlerCompact),
-/* harmony export */   "KeyboardDirectiveHandler": () => (/* reexport safe */ _directive_keyboard__WEBPACK_IMPORTED_MODULE_5__.KeyboardDirectiveHandler),
-/* harmony export */   "KeyboardDirectiveHandlerCompact": () => (/* reexport safe */ _directive_keyboard__WEBPACK_IMPORTED_MODULE_5__.KeyboardDirectiveHandlerCompact),
-/* harmony export */   "MouseDirectiveHandler": () => (/* reexport safe */ _directive_mouse__WEBPACK_IMPORTED_MODULE_6__.MouseDirectiveHandler),
-/* harmony export */   "MouseDirectiveHandlerCompact": () => (/* reexport safe */ _directive_mouse__WEBPACK_IMPORTED_MODULE_6__.MouseDirectiveHandlerCompact),
-/* harmony export */   "OverlayDirectiveHandler": () => (/* reexport safe */ _directive_overlay__WEBPACK_IMPORTED_MODULE_7__.OverlayDirectiveHandler),
-/* harmony export */   "OverlayDirectiveHandlerCompact": () => (/* reexport safe */ _directive_overlay__WEBPACK_IMPORTED_MODULE_7__.OverlayDirectiveHandlerCompact),
-/* harmony export */   "OverlayMagicHandler": () => (/* reexport safe */ _magic_overlay__WEBPACK_IMPORTED_MODULE_13__.OverlayMagicHandler),
-/* harmony export */   "OverlayMagicHandlerCompact": () => (/* reexport safe */ _magic_overlay__WEBPACK_IMPORTED_MODULE_13__.OverlayMagicHandlerCompact),
-/* harmony export */   "RemoveFormMiddleware": () => (/* reexport safe */ _directive_form__WEBPACK_IMPORTED_MODULE_3__.RemoveFormMiddleware),
-/* harmony export */   "ResourceConcept": () => (/* reexport safe */ _concepts_resource__WEBPACK_IMPORTED_MODULE_1__.ResourceConcept),
-/* harmony export */   "ResourceMagicHandler": () => (/* reexport safe */ _magic_resource__WEBPACK_IMPORTED_MODULE_14__.ResourceMagicHandler),
-/* harmony export */   "ResourceMagicHandlerCompact": () => (/* reexport safe */ _magic_resource__WEBPACK_IMPORTED_MODULE_14__.ResourceMagicHandlerCompact),
-/* harmony export */   "StateDirectiveHandler": () => (/* reexport safe */ _directive_state__WEBPACK_IMPORTED_MODULE_8__.StateDirectiveHandler),
-/* harmony export */   "StateDirectiveHandlerCompact": () => (/* reexport safe */ _directive_state__WEBPACK_IMPORTED_MODULE_8__.StateDirectiveHandlerCompact),
-/* harmony export */   "TickDirectiveHandler": () => (/* reexport safe */ _directive_tick__WEBPACK_IMPORTED_MODULE_9__.TickDirectiveHandler),
-/* harmony export */   "TickDirectiveHandlerCompact": () => (/* reexport safe */ _directive_tick__WEBPACK_IMPORTED_MODULE_9__.TickDirectiveHandlerCompact)
+/* harmony export */   "AddFormMiddleware": () => (/* reexport safe */ _directive_form__WEBPACK_IMPORTED_MODULE_4__.AddFormMiddleware),
+/* harmony export */   "AttrDirectiveHandler": () => (/* reexport safe */ _directive_attr__WEBPACK_IMPORTED_MODULE_3__.AttrDirectiveHandler),
+/* harmony export */   "AttrDirectiveHandlerCompact": () => (/* reexport safe */ _directive_attr__WEBPACK_IMPORTED_MODULE_3__.AttrDirectiveHandlerCompact),
+/* harmony export */   "FetchConcept": () => (/* reexport safe */ _concepts_fetch__WEBPACK_IMPORTED_MODULE_1__.FetchConcept),
+/* harmony export */   "FetchMagicHandler": () => (/* reexport safe */ _magic_fetch__WEBPACK_IMPORTED_MODULE_11__.FetchMagicHandler),
+/* harmony export */   "FetchMagicHandlerCompact": () => (/* reexport safe */ _magic_fetch__WEBPACK_IMPORTED_MODULE_11__.FetchMagicHandlerCompact),
+/* harmony export */   "FormDirectiveHandler": () => (/* reexport safe */ _directive_form__WEBPACK_IMPORTED_MODULE_4__.FormDirectiveHandler),
+/* harmony export */   "FormDirectiveHandlerCompact": () => (/* reexport safe */ _directive_form__WEBPACK_IMPORTED_MODULE_4__.FormDirectiveHandlerCompact),
+/* harmony export */   "FormDirectiveName": () => (/* reexport safe */ _names__WEBPACK_IMPORTED_MODULE_0__.FormDirectiveName),
+/* harmony export */   "FormatMagicHandler": () => (/* reexport safe */ _magic_format__WEBPACK_IMPORTED_MODULE_12__.FormatMagicHandler),
+/* harmony export */   "FormatMagicHandlerCompact": () => (/* reexport safe */ _magic_format__WEBPACK_IMPORTED_MODULE_12__.FormatMagicHandlerCompact),
+/* harmony export */   "GetMagicHandler": () => (/* reexport safe */ _magic_get__WEBPACK_IMPORTED_MODULE_13__.GetMagicHandler),
+/* harmony export */   "GetMagicHandlerCompact": () => (/* reexport safe */ _magic_get__WEBPACK_IMPORTED_MODULE_13__.GetMagicHandlerCompact),
+/* harmony export */   "IntersectionDirectiveHandler": () => (/* reexport safe */ _directive_intersection__WEBPACK_IMPORTED_MODULE_5__.IntersectionDirectiveHandler),
+/* harmony export */   "IntersectionDirectiveHandlerCompact": () => (/* reexport safe */ _directive_intersection__WEBPACK_IMPORTED_MODULE_5__.IntersectionDirectiveHandlerCompact),
+/* harmony export */   "KeyboardDirectiveHandler": () => (/* reexport safe */ _directive_keyboard__WEBPACK_IMPORTED_MODULE_6__.KeyboardDirectiveHandler),
+/* harmony export */   "KeyboardDirectiveHandlerCompact": () => (/* reexport safe */ _directive_keyboard__WEBPACK_IMPORTED_MODULE_6__.KeyboardDirectiveHandlerCompact),
+/* harmony export */   "MouseDirectiveHandler": () => (/* reexport safe */ _directive_mouse__WEBPACK_IMPORTED_MODULE_7__.MouseDirectiveHandler),
+/* harmony export */   "MouseDirectiveHandlerCompact": () => (/* reexport safe */ _directive_mouse__WEBPACK_IMPORTED_MODULE_7__.MouseDirectiveHandlerCompact),
+/* harmony export */   "OverlayDirectiveHandler": () => (/* reexport safe */ _directive_overlay__WEBPACK_IMPORTED_MODULE_8__.OverlayDirectiveHandler),
+/* harmony export */   "OverlayDirectiveHandlerCompact": () => (/* reexport safe */ _directive_overlay__WEBPACK_IMPORTED_MODULE_8__.OverlayDirectiveHandlerCompact),
+/* harmony export */   "OverlayMagicHandler": () => (/* reexport safe */ _magic_overlay__WEBPACK_IMPORTED_MODULE_14__.OverlayMagicHandler),
+/* harmony export */   "OverlayMagicHandlerCompact": () => (/* reexport safe */ _magic_overlay__WEBPACK_IMPORTED_MODULE_14__.OverlayMagicHandlerCompact),
+/* harmony export */   "RemoveFormMiddleware": () => (/* reexport safe */ _directive_form__WEBPACK_IMPORTED_MODULE_4__.RemoveFormMiddleware),
+/* harmony export */   "ResourceConcept": () => (/* reexport safe */ _concepts_resource__WEBPACK_IMPORTED_MODULE_2__.ResourceConcept),
+/* harmony export */   "ResourceMagicHandler": () => (/* reexport safe */ _magic_resource__WEBPACK_IMPORTED_MODULE_15__.ResourceMagicHandler),
+/* harmony export */   "ResourceMagicHandlerCompact": () => (/* reexport safe */ _magic_resource__WEBPACK_IMPORTED_MODULE_15__.ResourceMagicHandlerCompact),
+/* harmony export */   "StateDirectiveHandler": () => (/* reexport safe */ _directive_state__WEBPACK_IMPORTED_MODULE_9__.StateDirectiveHandler),
+/* harmony export */   "StateDirectiveHandlerCompact": () => (/* reexport safe */ _directive_state__WEBPACK_IMPORTED_MODULE_9__.StateDirectiveHandlerCompact),
+/* harmony export */   "StateDirectiveName": () => (/* reexport safe */ _names__WEBPACK_IMPORTED_MODULE_0__.StateDirectiveName),
+/* harmony export */   "TickDirectiveHandler": () => (/* reexport safe */ _directive_tick__WEBPACK_IMPORTED_MODULE_10__.TickDirectiveHandler),
+/* harmony export */   "TickDirectiveHandlerCompact": () => (/* reexport safe */ _directive_tick__WEBPACK_IMPORTED_MODULE_10__.TickDirectiveHandlerCompact)
 /* harmony export */ });
-/* harmony import */ var _concepts_fetch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./concepts/fetch */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/concepts/fetch.js");
-/* harmony import */ var _concepts_resource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./concepts/resource */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/concepts/resource.js");
-/* harmony import */ var _directive_attr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./directive/attr */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/attr.js");
-/* harmony import */ var _directive_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./directive/form */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/form.js");
-/* harmony import */ var _directive_intersection__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./directive/intersection */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/intersection.js");
-/* harmony import */ var _directive_keyboard__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./directive/keyboard */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/keyboard.js");
-/* harmony import */ var _directive_mouse__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./directive/mouse */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/mouse.js");
-/* harmony import */ var _directive_overlay__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./directive/overlay */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/overlay.js");
-/* harmony import */ var _directive_state__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./directive/state */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/state.js");
-/* harmony import */ var _directive_tick__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./directive/tick */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/tick.js");
-/* harmony import */ var _magic_fetch__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./magic/fetch */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/fetch.js");
-/* harmony import */ var _magic_format__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./magic/format */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/format.js");
-/* harmony import */ var _magic_get__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./magic/get */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/get.js");
-/* harmony import */ var _magic_overlay__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./magic/overlay */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/overlay.js");
-/* harmony import */ var _magic_resource__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./magic/resource */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/resource.js");
+/* harmony import */ var _names__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./names */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/names.js");
+/* harmony import */ var _concepts_fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./concepts/fetch */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/concepts/fetch.js");
+/* harmony import */ var _concepts_resource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./concepts/resource */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/concepts/resource.js");
+/* harmony import */ var _directive_attr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./directive/attr */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/attr.js");
+/* harmony import */ var _directive_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./directive/form */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/form.js");
+/* harmony import */ var _directive_intersection__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./directive/intersection */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/intersection.js");
+/* harmony import */ var _directive_keyboard__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./directive/keyboard */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/keyboard.js");
+/* harmony import */ var _directive_mouse__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./directive/mouse */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/mouse.js");
+/* harmony import */ var _directive_overlay__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./directive/overlay */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/overlay.js");
+/* harmony import */ var _directive_state__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./directive/state */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/state.js");
+/* harmony import */ var _directive_tick__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./directive/tick */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/directive/tick.js");
+/* harmony import */ var _magic_fetch__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./magic/fetch */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/fetch.js");
+/* harmony import */ var _magic_format__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./magic/format */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/format.js");
+/* harmony import */ var _magic_get__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./magic/get */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/get.js");
+/* harmony import */ var _magic_overlay__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./magic/overlay */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/overlay.js");
+/* harmony import */ var _magic_resource__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./magic/resource */ "./node_modules/@benbraide/inlinejs-extended/lib/esm/magic/resource.js");
+
 
 
 
@@ -3793,6 +3858,23 @@ const ResourceMagicHandler = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__
 function ResourceMagicHandlerCompact() {
     (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.AddMagicHandler)(ResourceMagicHandler);
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/@benbraide/inlinejs-extended/lib/esm/names.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/@benbraide/inlinejs-extended/lib/esm/names.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "FormDirectiveName": () => (/* binding */ FormDirectiveName),
+/* harmony export */   "StateDirectiveName": () => (/* binding */ StateDirectiveName)
+/* harmony export */ });
+const FormDirectiveName = 'form';
+const StateDirectiveName = 'state';
 
 
 /***/ }),

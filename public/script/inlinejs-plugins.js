@@ -265,14 +265,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _callback__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./callback */ "./node_modules/@benbraide/inlinejs-animation/lib/esm/actors/callback.js");
 
 
-const OpacityAnimationActor = (0,_callback__WEBPACK_IMPORTED_MODULE_1__.CreateAnimationActorCallback)('opacity', ({ fraction, target, stage }) => {
-    if (stage === 'end') {
-        target.style.removeProperty('opacity');
-    }
-    else {
-        target.style.opacity = fraction.toString();
-    }
-});
+const OpacityAnimationActor = (0,_callback__WEBPACK_IMPORTED_MODULE_1__.CreateAnimationActorCallback)('opacity', ({ fraction, target }) => (target.style.opacity = fraction.toString()));
 function OpacityAnimationActorCompact() {
     (0,_add__WEBPACK_IMPORTED_MODULE_0__.AddAnimationActor)(OpacityAnimationActor);
 }
@@ -3701,6 +3694,7 @@ class RouterConcept {
         this.dataHandlers_ = new Array();
         this.pathChangeHandlers_ = new Array();
         this.pages_ = {};
+        this.mountPath_ = null;
         this.current_ = {
             path: '',
             page: null,
@@ -3711,11 +3705,7 @@ class RouterConcept {
         if (this.origin_) { //Remove trailing slashes
             this.origin_ = this.origin_.replace(/\/+$/, '');
         }
-        this.onEvent_ = (e) => {
-            if (e.state && (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.IsObject)(e.state) && e.state.hasOwnProperty('base') && e.state.hasOwnProperty('query')) {
-                this.Load_(e.state, false);
-            }
-        };
+        this.onEvent_ = e => (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JournalTry)(() => this.Load_((e.state || this.mountPath_ || ''), false), 'InlineJS.RouterConcept.PopStateEvent');
     }
     GetOrigin() {
         return this.origin_;
@@ -3784,18 +3774,17 @@ class RouterConcept {
         return (Object.values(this.pages_).find(p => ((typeof p.path === 'string') ? (p.path === path) : p.path.test(path))) || null);
     }
     Mount(load) {
-        var _a;
         window.addEventListener('popstate', this.onEvent_);
         let path = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.PathToRelative)(window.location.href, this.origin_), split = (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.SplitPath)(path);
         if (!load) {
             this.current_.path = path;
             this.current_.page = this.FindMatchingPage(split.base);
-            window.history.pushState(split, (((_a = this.current_.page) === null || _a === void 0 ? void 0 : _a.title) || 'Untitled'), path);
             this.pathChangeHandlers_.forEach(handler => (0,_benbraide_inlinejs__WEBPACK_IMPORTED_MODULE_0__.JournalTry)(() => handler(path), 'InlineJS.RouterConcept.Mount'));
         }
         else {
-            this.Load_(split, true);
+            this.Load_(split, false);
         }
+        this.mountPath_ = split;
     }
     Goto(path, shouldReload, data) {
         let resolvedPath = null;
